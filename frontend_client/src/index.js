@@ -2,7 +2,11 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
+import axios from 'axios'
 import './index.css'
+
+axios.defaults.baseURL = process.env.REACT_APP_HOST_URL
+axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*'
 
 ReactDOM.render(
   <React.StrictMode>
