@@ -42,6 +42,7 @@ class AuthController extends Controller
         return $this->respondWithToken($token);
     }
 
+
     /**
      * Get the authenticated User.
      *

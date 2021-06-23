@@ -8,7 +8,7 @@ import { useMutation } from 'react-query'
 import axios from 'axios'
 import logo from '../logo.png'
 
-const SignForm = ({ setToken }) => {
+const Login = ({ setToken }) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const history = useHistory()
@@ -35,7 +35,7 @@ const SignForm = ({ setToken }) => {
       <Card className="col-start-2 p-6 text-center">
         <div>
           <img src={logo} className="w-28 m-auto" alt="logo" />
-          <h1 className="font-bold">Sign in</h1>
+          <h1 className="font-bold">Log in</h1>
           <div className="flex text-xs justify-center mt-2 mb-3">
             <p className="mr-2">Don’t have an account?</p>
             <Link className="text-blue-400">Create Account</Link>
@@ -97,4 +97,4 @@ const SignForm = ({ setToken }) => {
   )
 }
 
-export default SignForm
+export default Login
