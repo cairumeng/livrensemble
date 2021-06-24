@@ -1,6 +1,9 @@
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
-import Login from './pages/Login'
-import Register from './pages/Register'
+import Login from './pages/auth/Login'
+import Register from './pages/auth/Register'
+import ForgotPassword from './pages/auth/ForgotPassword'
+import ResetPassword from './pages/auth/ResetPassword'
+
 import 'tailwindcss/tailwind.css'
 import { UserContext } from './context/useAccount'
 import { QueryClientProvider, QueryClient } from 'react-query'
@@ -9,6 +12,7 @@ import { useEffect, useState } from 'react'
 import { positions, Provider } from 'react-alert'
 import AlertTemplate from 'react-alert-template-basic'
 import axios from 'axios'
+
 const options = {
   timeout: 5000,
   position: positions.BOTTOM_CENTER,
@@ -54,6 +58,14 @@ function App() {
                   render={() => <Login setToken={setToken} />}
                 />
                 <Route path="/register" render={() => <Register />} />
+                <Route
+                  path="/password-forgot"
+                  render={() => <ForgotPassword />}
+                />
+                <Route
+                  path="/password-reset"
+                  render={() => <ResetPassword />}
+                />
               </Switch>
             </div>
           </Router>

@@ -2,61 +2,48 @@ import { useState } from 'react'
 import Card from 'react-rainbow-components/components/Card'
 import Input from 'react-rainbow-components/components/Input'
 import Button from 'react-rainbow-components/components/Button'
-import { Email, Lock } from '../components/icons'
-import { useHistory } from 'react-router-dom'
+import { Lock } from '../../components/icons'
 import { useMutation } from 'react-query'
+import { useHistory, useLocation } from 'react-router-dom'
 import { useAlert } from 'react-alert'
 import axios from 'axios'
-import logo from '../logo.png'
-
-const Register = () => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+import logo from '../../logo.png'
+const ResetPassword = () => {
+  const [password, setPassword] = useState()
   const [passwordConfirmation, setPasswordConfirmation] = useState()
-  const history = useHistory()
+  const search = useLocation().search
+  const email = new URLSearchParams(search).get('email')
+  const token = new URLSearchParams(search).get('token')
   const alert = useAlert()
-  const roleId = 1
+  const history = useHistory()
 
-  const register = useMutation((info) => axios.post('users', info), {
-    onSuccess: () => {
-      history.push('/login')
-      alert.success('Registration successful! Please login!')
-    },
-  })
+  const resetPassword = useMutation(
+    (data) => axios.post('password/reset', data),
+    {
+      onSuccess: () => {
+        history.push('/login')
+        alert.success('Reset sucessfully! Please log in!')
+      },
+    }
+  )
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    register.mutate({
-      email,
+    resetPassword.mutate({
       password,
       password_confirmation: passwordConfirmation,
-      roleId,
+      email,
+      token,
     })
   }
-
   return (
     <div className="grid grid-cols-3 gap-4 mt-24">
       <Card className="col-start-2 p-6 text-center">
         <div>
           <img src={logo} className="w-28 m-auto" alt="logo" />
-          <h1 className="font-bold">Sign up</h1>
+          <h1 className="font-bold">Reset password</h1>
         </div>
-        <article>
-          <Input
-            icon={<Email />}
-            name="email"
-            label="Email"
-            defaultMessage="Email address"
-            required
-            placeholder="Enter your email"
-            type="email"
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          {register.isError && (
-            <div className="text-red-500">
-              {register.error.response.data?.errors?.email}
-            </div>
-          )}
+        <article className="mt-6">
           <Input
             icon={<Lock />}
             className="mt-3"
@@ -64,13 +51,13 @@ const Register = () => {
             label="Password"
             defaultMessage="Password"
             required
-            placeholder="Enter your password"
+            placeholder="Enter your new password"
             type="password"
             onChange={(e) => setPassword(e.target.value)}
           />
-          {register.isError && (
+          {resetPassword.isError && (
             <div className="text-red-500">
-              {register.error.response.data?.errors?.password}
+              {resetPassword.error.response.data?.errors?.password}
             </div>
           )}
 
@@ -85,9 +72,9 @@ const Register = () => {
             type="password"
             onChange={(e) => setPasswordConfirmation(e.target.value)}
           />
-          {register.isError && (
+          {resetPassword.isError && (
             <div className="text-red-500">
-              {register.error.response.data?.errors?.password}
+              {resetPassword.error.response.data?.errors?.password}
             </div>
           )}
 
@@ -95,15 +82,14 @@ const Register = () => {
             type="submit"
             className="mt-4 w-full"
             variant="brand"
-            isLoading={register.isLoading}
+            isLoading={resetPassword.isLoading}
             onClick={(e) => handleSubmit(e)}
           >
-            <span>Register</span>
+            <span>Reset</span>
           </Button>
         </article>
       </Card>
     </div>
   )
 }
-
-export default Register
+export default ResetPassword

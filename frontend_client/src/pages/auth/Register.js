@@ -2,32 +2,36 @@ import { useState } from 'react'
 import Card from 'react-rainbow-components/components/Card'
 import Input from 'react-rainbow-components/components/Input'
 import Button from 'react-rainbow-components/components/Button'
-import { Email, Lock } from '../components/icons'
-import { Link, useHistory } from 'react-router-dom'
+import { Email, Lock } from '../../components/icons'
+import { useHistory } from 'react-router-dom'
 import { useMutation } from 'react-query'
+import { useAlert } from 'react-alert'
 import axios from 'axios'
-import logo from '../logo.png'
+import logo from '../../logo.png'
 
-const Login = ({ setToken }) => {
+const Register = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [passwordConfirmation, setPasswordConfirmation] = useState()
   const history = useHistory()
+  const alert = useAlert()
+  const roleId = 1
 
-  const login = useMutation(
-    ({ email, password }) => axios.post('auth/login', { email, password }),
-    {
-      onSuccess: (data) => {
-        const token = `Bearer ${data.access_token}`
-        setToken(token)
-        localStorage.setItem('LIVRENSEMBLE_TOKEN', token)
-        history.push('/')
-      },
-    }
-  )
+  const register = useMutation((info) => axios.post('users', info), {
+    onSuccess: () => {
+      history.push('/login')
+      alert.success('Registration successful! Please login!')
+    },
+  })
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    login.mutate({ email, password })
+    register.mutate({
+      email,
+      password,
+      password_confirmation: passwordConfirmation,
+      roleId,
+    })
   }
 
   return (
@@ -35,13 +39,9 @@ const Login = ({ setToken }) => {
       <Card className="col-start-2 p-6 text-center">
         <div>
           <img src={logo} className="w-28 m-auto" alt="logo" />
-          <h1 className="font-bold">Log in</h1>
-          <div className="flex text-xs justify-center mt-2 mb-3">
-            <p className="mr-2">Don’t have an account?</p>
-            <Link className="text-blue-400">Create Account</Link>
-          </div>
+          <h1 className="font-bold">Sign up</h1>
         </div>
-        <article>
+        <article className="mt-6">
           <Input
             icon={<Email />}
             name="email"
@@ -52,9 +52,9 @@ const Login = ({ setToken }) => {
             type="email"
             onChange={(e) => setEmail(e.target.value)}
           />
-          {login.isError && (
+          {register.isError && (
             <div className="text-red-500">
-              {login.error.response.data.errors.email}
+              {register.error.response.data?.errors?.email}
             </div>
           )}
           <Input
@@ -68,33 +68,42 @@ const Login = ({ setToken }) => {
             type="password"
             onChange={(e) => setPassword(e.target.value)}
           />
-          {login.isError && (
+          {register.isError && (
             <div className="text-red-500">
-              {login.error.response.data.errors.password}
+              {register.error.response.data?.errors?.password}
             </div>
           )}
+
+          <Input
+            icon={<Lock />}
+            className="mt-3"
+            name="password confirmation"
+            label="Password Confirmation"
+            defaultMessage="Password"
+            required
+            placeholder="Confirm your password"
+            type="password"
+            onChange={(e) => setPasswordConfirmation(e.target.value)}
+          />
+          {register.isError && (
+            <div className="text-red-500">
+              {register.error.response.data?.errors?.password}
+            </div>
+          )}
+
           <Button
             type="submit"
             className="mt-4 w-full"
             variant="brand"
-            isLoading={login.isLoading}
+            isLoading={register.isLoading}
             onClick={(e) => handleSubmit(e)}
           >
-            <span>Login</span>
+            <span>Register</span>
           </Button>
-          <Input
-            name="remember"
-            type="checkbox"
-            label="Remember me"
-            className="mt-3 text-sm text-left"
-          />
-          <div className="mt-4 text-sm text-blue-400">
-            <Link>Forgot your password?</Link>
-          </div>
         </article>
       </Card>
     </div>
   )
 }
 
-export default Login
+export default Register
