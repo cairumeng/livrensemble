@@ -3,15 +3,17 @@ import Login from './pages/auth/Login'
 import Register from './pages/auth/Register'
 import ForgotPassword from './pages/auth/ForgotPassword'
 import ResetPassword from './pages/auth/ResetPassword'
+import Index from './pages/Index'
 
 import 'tailwindcss/tailwind.css'
-import { UserContext } from './context/useAccount'
+import { AccountContext } from './context/useAccount'
 import { QueryClientProvider, QueryClient } from 'react-query'
 import './App.css'
 import { useEffect, useState } from 'react'
 import { positions, Provider } from 'react-alert'
 import AlertTemplate from 'react-alert-template-basic'
 import axios from 'axios'
+import Header from './components/Header'
 
 const options = {
   timeout: 5000,
@@ -40,38 +42,25 @@ function App() {
   return (
     <Provider template={AlertTemplate} {...options}>
       <QueryClientProvider client={queryClient}>
-        <UserContext.Provider user={user}>
+        <AccountContext.Provider value={user}>
           <Router>
-            <div>
-              <nav>
-                <ul>
-                  <li>
-                    <Link to="/login">Login</Link>
-                  </li>
-                  <li>
-                    <Link to="/register">Register</Link>
-                  </li>
-                </ul>
-              </nav>
+            <Header />
+            <Switch>
+              <Route path="/" exact render={() => <Index />} />
 
-              <Switch>
-                <Route
-                  path="/login"
-                  render={() => <Login setToken={setToken} />}
-                />
-                <Route path="/register" render={() => <Register />} />
-                <Route
-                  path="/password-forgot"
-                  render={() => <ForgotPassword />}
-                />
-                <Route
-                  path="/password-reset"
-                  render={() => <ResetPassword />}
-                />
-              </Switch>
-            </div>
+              <Route
+                path="/login"
+                render={() => <Login setToken={setToken} />}
+              />
+              <Route path="/register" render={() => <Register />} />
+              <Route
+                path="/password-forgot"
+                render={() => <ForgotPassword />}
+              />
+              <Route path="/password-reset" render={() => <ResetPassword />} />
+            </Switch>
           </Router>
-        </UserContext.Provider>
+        </AccountContext.Provider>
       </QueryClientProvider>
     </Provider>
   )
