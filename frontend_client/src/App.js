@@ -23,13 +23,15 @@ function App() {
   const [token, setToken] = useState('')
   const queryClient = new QueryClient()
 
-  // const localToken = localStorage.getItem('LIVRENSEMBLE_TOKEN')
-  // if (localToken) setToken(localToken)
+  useEffect(() => {
+    const localToken = localStorage.getItem('LIVRENSEMBLE_TOKEN')
+    if (localToken) setToken(localToken)
+  }, [])
 
   useEffect(() => {
     axios.defaults.headers.common['Authorization'] = token
     if (token) {
-      axios.post('auth/me').then((data) => {
+      axios.post('auth/me').then(({ data }) => {
         setUser(data)
       })
     }

@@ -16,7 +16,7 @@ const Login = ({ setToken }) => {
   const login = useMutation(
     ({ email, password }) => axios.post('auth/login', { email, password }),
     {
-      onSuccess: (data) => {
+      onSuccess: ({ data }) => {
         const token = `Bearer ${data.access_token}`
         setToken(token)
         localStorage.setItem('LIVRENSEMBLE_TOKEN', token)
@@ -31,8 +31,8 @@ const Login = ({ setToken }) => {
   }
 
   return (
-    <div className="grid grid-cols-3 gap-4 mt-24">
-      <Card className="col-start-2 p-6 text-center">
+    <div className="grid grid-cols-1 sm:grid-cols-8 2xl:grid-cols-5 gap-4 mt-24 p-4">
+      <Card className="sm:col-start-3 sm:col-span-4 2xl:col-start-3 2xl:col-span-1 p-6 text-center">
         <div>
           <img src={logo} className="w-28 m-auto" alt="logo" />
           <h1 className="font-bold">Log in</h1>
