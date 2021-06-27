@@ -6,7 +6,7 @@ const useClickOutside = ({ clickHandler }) => {
   useEffect(() => {
     const listener = (event) => {
       event.stopPropagation()
-      if (!nodeRef.current.contains(event.target)) {
+      if (!nodeRef.current?.contains(event.target)) {
         clickHandler()
       }
     }
