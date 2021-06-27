@@ -16,7 +16,9 @@ class CreateRestaurantCommandsTable extends Migration
         Schema::create('restaurant_commands', function (Blueprint $table) {
             $table->id();
             $table->foreignId('restaurant_id')->constrained();
-            $table->foreignId('city_id')->constrained();
+            $table->foreignId('city_id')->constrained()->nullable();
+            $table->unsignedInteger('department_code');
+            $table->foreign('department_code')->references('code')->on('departments')->nullable();
             $table->decimal('target_price');
             $table->decimal('current_price')->default(0);
             $table->timestamp('started_at');
