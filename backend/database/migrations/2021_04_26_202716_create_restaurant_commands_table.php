@@ -16,16 +16,20 @@ class CreateRestaurantCommandsTable extends Migration
         Schema::create('restaurant_commands', function (Blueprint $table) {
             $table->id();
             $table->foreignId('restaurant_id')->constrained();
-            $table->foreignId('city_id')->constrained()->nullable();
-            $table->unsignedInteger('department_code');
-            $table->foreign('department_code')->references('code')->on('departments')->nullable();
+
+            $table->unsignedBigInteger('city_id')->nullable();
+            $table->foreign('city_id')->references('id')->on('cities');
+
+            $table->unsignedInteger('department_code')->nullable();
+            $table->foreign('department_code')->references('code')->on('departments');
+
             $table->decimal('target_price');
             $table->decimal('current_price')->default(0);
             $table->timestamp('started_at');
             $table->timestamp('ended_at');
             $table->date('delivery_date');
             $table->text('description')->nullable();
-            $table->unsignedInteger('delivery_address_option');
+            $table->unsignedInteger('delivery_address_option')->comment('0: delivery to home, 1: delivery to one position');
             $table->string('delivery_address')->nullable();
             $table->unsignedInteger('status');
             $table->boolean('is_template')->default(false);

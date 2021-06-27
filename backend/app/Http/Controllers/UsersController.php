@@ -21,7 +21,6 @@ class UsersController extends Controller
         ]);
 
         return User::create([
-            'username' => '',
             'role' => $request->role,
             'email' => $request->email,
             'password' => Hash::make($request->password),
@@ -31,12 +30,12 @@ class UsersController extends Controller
     public function update(User $user, Request $request)
     {
         $request->validate([
-            'username' => 'required|max:12',
+            'name' => 'required|max:12',
             'description' => 'required|max:512'
         ]);
 
         return $user->update([
-            'username' => $request->username,
+            'name' => $request->name,
             'description' => $request->description
         ]);
     }

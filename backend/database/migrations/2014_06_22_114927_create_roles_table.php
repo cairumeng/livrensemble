@@ -20,11 +20,11 @@ class CreateRolesTable extends Migration
             $table->timestamps();
         });
 
-        DB::table('roles')->insert(
+        DB::table('roles')->insert([
             ['id' => 1, 'type' => 'client'],
             ['id' => 2, 'type' => 'restaurant'],
             ['id' => 3, 'type' => 'admin'],
-        );
+        ]);
     }
 
     /**

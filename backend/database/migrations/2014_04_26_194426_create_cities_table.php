@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class CreateCitiesTable extends Migration
@@ -17,10 +18,12 @@ class CreateCitiesTable extends Migration
             $table->id();
             $table->string('name');
             $table->unsignedInteger('postal_code')->index();
-            $table->unsignedInteger('department_code');
-            $table->foreign('department_code')->references('code')->on('departments')->nullable();
+            $table->unsignedInteger('department_code')->nullable();
+            $table->foreign('department_code')->references('code')->on('departments');
             $table->timestamps();
         });
+
+        DB::unprepared(file_get_contents(database_path('seeds/sql/cities.sql')));
     }
 
     /**
