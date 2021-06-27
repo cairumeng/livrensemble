@@ -21,7 +21,7 @@ const options = {
 }
 
 function App() {
-  const [user, setUser] = useState({})
+  const [user, setUser] = useState(null)
   const [token, setToken] = useState('')
   const queryClient = new QueryClient()
 
