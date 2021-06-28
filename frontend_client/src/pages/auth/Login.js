@@ -20,6 +20,10 @@ const Login = ({ setToken }) => {
         const token = `Bearer ${data.access_token}`
         setToken(token)
         localStorage.setItem('LIVRENSEMBLE_TOKEN', token)
+        localStorage.setItem(
+          'LIVRENSEMBLE_TOKEN_EXPIRED_AT',
+          Date.now() + data.expires_in - 60
+        )
         history.push('/')
       },
     }

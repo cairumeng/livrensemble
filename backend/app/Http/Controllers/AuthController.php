@@ -15,7 +15,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        // $this->middleware('auth:api', ['except' => ['login']]);
+        $this->middleware('auth:api', ['except' => ['login']]);
     }
 
     /**
@@ -31,6 +31,7 @@ class AuthController extends Controller
         ]);
         $credentials = request(['email', 'password']);
 
+        $this->setExpiredDuration();
         if (!$token = Auth::attempt($credentials)) {
             return response()->json([
                 'errors' => [
@@ -79,8 +80,7 @@ class AuthController extends Controller
     {
         $remember = request('remember');
 
-
-        $duration = 60 * 60 * 24;
+        $duration = 60 * 60 * 24; // 1 day
         if ($remember) {
             $duration *= 30;
         }

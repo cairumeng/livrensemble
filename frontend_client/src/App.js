@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Login from './pages/auth/Login'
 import Register from './pages/auth/Register'
 import ForgotPassword from './pages/auth/ForgotPassword'
@@ -26,17 +26,20 @@ function App() {
   const queryClient = new QueryClient()
 
   useEffect(() => {
+    const expiresIn = localStorage.getItem('LIVRENSEMBLE_TOKEN_EXPIRED_AT')
+    if (!expiresIn || expiresIn < Date.now()) return
+
     const localToken = localStorage.getItem('LIVRENSEMBLE_TOKEN')
     if (localToken) setToken(localToken)
   }, [])
 
   useEffect(() => {
+    if (!token) return
+
     axios.defaults.headers.common['Authorization'] = token
-    if (token) {
-      axios.post('auth/me').then(({ data }) => {
-        setUser(data)
-      })
-    }
+    axios.post('auth/me').then(({ data }) => {
+      setUser(data)
+    })
   }, [token])
 
   return (

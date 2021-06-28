@@ -13,10 +13,9 @@ const Header = () => {
     clickHandler: () => setShowProfile(false),
   })
   const logout = () => {
-    axios.post('auth/logout').then(() => {
-      localStorage.removeItem('LIVRENSEMBLE_TOKEN')
-      window.location.reload()
-    })
+    axios.post('auth/logout')
+    localStorage.removeItem('LIVRENSEMBLE_TOKEN')
+    window.location.reload()
   }
 
   return (
