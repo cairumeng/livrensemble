@@ -1,9 +1,24 @@
+import axios from 'axios'
 import React, { useState } from 'react'
 
-import GoogleAddressLookup from 'react-rainbow-components/components/GoogleAddressLookup'
+import Lookup from 'react-rainbow-components/components/Lookup'
 
 const Index = () => {
-  const [address, setAddress] = useState(null)
+  const [city, setCity] = useState(null)
+  const [options, setOptions] = useState([])
+
+  const search = (value) => {
+    const trimedValue = value?.trim()
+    if (trimedValue.length < 1) return
+
+    axios.get(`cities?search=${trimedValue}`).then((response) => {
+      const cityOptions = response.data.map((city) => ({
+        label: `${city.name}, ${city.postal_code}`,
+        id: city.id,
+      }))
+      setOptions(cityOptions)
+    })
+  }
 
   return (
     <div
@@ -11,12 +26,13 @@ const Index = () => {
       style={{ height: 'calc(100vh - 4rem)' }}
     >
       <h1 className="font-bold text-4xl mb-5">Livrensemble</h1>
-
-      <GoogleAddressLookup
-        onChange={(value) => setAddress(value)}
-        value={address}
-        placeholder="Enter your address to find a restaurant"
-        apiKey="AIzaSyAGfmv0CeO4LyBVAX6fN-gdHmyNFLRfm9M"
+      <Lookup
+        placeholder="Enter your city name or postal code"
+        options={options}
+        debounce
+        value={city}
+        onChange={(option) => setCity(option)}
+        onSearch={search}
         className="w-full sm:w-1/2 lg:w-1/3"
       />
     </div>

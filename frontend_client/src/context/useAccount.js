@@ -1,6 +1,6 @@
-import React, { useContext, createContext } from 'react'
+import { useContext, createContext } from 'react'
 
-export const AccountContext = React.createContext()
+export const AccountContext = createContext()
 
 const useAccount = () => useContext(AccountContext)
 export default useAccount
