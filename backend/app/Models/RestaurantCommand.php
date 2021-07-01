@@ -23,4 +23,25 @@ class RestaurantCommand extends Model
     protected $casts = ['delivery_address_option' => 'number', 'status' => 'number', 'is_template' => 'boolean'];
 
     protected $dates = ['started_at', 'ended_at', 'delivery_date'];
+
+    public function restaurant()
+    {
+        return $this->belongsTo(Restaurant::class);
+    }
+
+    public function scopeByStatus($query, $statuses)
+    {
+        if (is_array($statuses)) {
+            return $query->whereIn('status', $statuses);
+        }
+        return $query->where('status', $statuses);
+    }
+
+    public function scopeByCity($query, $city)
+    {
+        return $query->where(function ($builder) use ($city) {
+            return $builder->where('city_id', $city->id)
+                ->orWhere('department_code', $city->department_code);
+        });
+    }
 }

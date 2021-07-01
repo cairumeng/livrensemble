@@ -4,6 +4,7 @@ import Register from './pages/auth/Register'
 import ForgotPassword from './pages/auth/ForgotPassword'
 import ResetPassword from './pages/auth/ResetPassword'
 import Index from './pages/Index'
+import RestaurantCommandsIndex from './pages/restaurant-commands/Index'
 
 import 'tailwindcss/tailwind.css'
 import { AccountContext } from './context/useAccount'
@@ -61,6 +62,10 @@ function App() {
                 render={() => <ForgotPassword />}
               />
               <Route path="/password-reset" render={() => <ResetPassword />} />
+              <Route
+                path="/restaurant-commands"
+                render={() => <RestaurantCommandsIndex />}
+              />
             </Switch>
           </Router>
         </AccountContext.Provider>

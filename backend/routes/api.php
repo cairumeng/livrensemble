@@ -26,3 +26,5 @@ Route::resource('users', 'UsersController')->only(['store', 'update']);
 Route::post('password/email', 'ForgotPasswordController@forgot');
 Route::post('password/reset', 'ForgotPasswordController@reset');
 Route::resource('cities', 'CitiesController')->only(['index']);
+
+Route::resource('restaurant-commands', 'RestaurantCommandsController')->only(['index']);

@@ -2,10 +2,12 @@ import axios from 'axios'
 import React, { useState } from 'react'
 
 import Lookup from 'react-rainbow-components/components/Lookup'
+import { useHistory } from 'react-router-dom'
 
 const Index = () => {
   const [city, setCity] = useState(null)
   const [options, setOptions] = useState([])
+  const history = useHistory()
 
   const search = (value) => {
     const trimedValue = value?.trim()
@@ -20,6 +22,11 @@ const Index = () => {
     })
   }
 
+  const getCityCommandsHandler = (option) => {
+    setCity(option)
+    history.push(`restaurant-commands?cityId=${option.id}`)
+  }
+
   return (
     <div
       className="flex justify-center items-center p-2 flex-col"
@@ -31,7 +38,7 @@ const Index = () => {
         options={options}
         debounce
         value={city}
-        onChange={(option) => setCity(option)}
+        onChange={(option) => getCityCommandsHandler(option)}
         onSearch={search}
         className="w-full sm:w-1/2 lg:w-1/3"
       />
