@@ -20,7 +20,7 @@ class RestaurantCommandsController extends Controller
         $commands = RestaurantCommand::with('restaurant')
             ->byStatus(RestaurantCommand::STATUS['GROUPING'])
             ->byCity($city)
-            ->get();
+            ->paginate(1);
 
         return response()->json([
             'city' => $city,
