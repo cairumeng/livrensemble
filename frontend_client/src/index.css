@@ -6,3 +6,6 @@ body,
 #root {
   height: 100vh;
 }
+input[type='search']::-webkit-search-cancel-button {
+  display: none;
+}
