@@ -1,30 +1,37 @@
 import axios from 'axios'
 import React, { useState } from 'react'
-
+import { useMutation } from 'react-query'
 import Lookup from 'react-rainbow-components/components/Lookup'
 import { useHistory } from 'react-router-dom'
 
 const Index = () => {
-  const [city, setCity] = useState(null)
-  const [options, setOptions] = useState([])
+  const [_, setCity] = useState()
+  const [options, setOptions] = useState(null)
   const history = useHistory()
+
+  const searchMutation = useMutation(
+    (searchValue) => axios.get(`cities?search=${searchValue}`),
+    {
+      onSuccess: ({ data }) => {
+        const cityOptions = data.map((city) => ({
+          label: `${city.name}, ${city.postal_code}`,
+          id: city.id,
+        }))
+        setOptions(cityOptions)
+      },
+    }
+  )
 
   const search = (value) => {
     const trimedValue = value?.trim()
     if (trimedValue.length < 1) return
 
-    axios.get(`cities?search=${trimedValue}`).then((response) => {
-      const cityOptions = response.data.map((city) => ({
-        label: `${city.name}, ${city.postal_code}`,
-        id: city.id,
-      }))
-      setOptions(cityOptions)
-    })
+    searchMutation.mutate(trimedValue)
   }
 
-  const getCityCommandsHandler = (option) => {
-    setCity(option)
-    history.push(`restaurant-commands?cityId=${option.id}`)
+  const redirectToCity = (city) => {
+    setCity(city)
+    history.push(`restaurant-commands?cityId=${city.id}`)
   }
 
   return (
@@ -37,12 +44,12 @@ const Index = () => {
         placeholder="Enter your city name or postal code"
         options={options}
         debounce
-        value={city}
-        onChange={(option) => getCityCommandsHandler(option)}
+        isLoading={searchMutation.isLoading}
+        onChange={(city) => redirectToCity(city)}
         onSearch={search}
-        className="w-full sm:w-1/2 lg:w-1/3"
       />
     </div>
   )
 }
+
 export default Index
