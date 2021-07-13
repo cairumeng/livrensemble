@@ -30,3 +30,5 @@ Route::resource('cities', 'CitiesController')->only(['index']);
 Route::resource('restaurant-commands', 'RestaurantCommandsController')->only(['index', 'show']);
 
 Route::resource('dish-categories', 'DishCategoriesController')->only(['index']);
+Route::resource('cart-items', 'CartItemsController')->only(['index', 'update', 'store']);
+Route::post('cart-items/scynchronize', 'CartItemsController@scynchronize');
