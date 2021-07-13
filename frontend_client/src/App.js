@@ -27,8 +27,13 @@ function App() {
   const queryClient = new QueryClient()
 
   useEffect(() => {
-    const expiresIn = localStorage.getItem('LIVRENSEMBLE_TOKEN_EXPIRED_AT')
-    if (!expiresIn || expiresIn < Date.now()) return
+    // const expiresIn = localStorage.getItem('LIVRENSEMBLE_TOKEN_EXPIRED_AT')
+
+    // if (!expiresIn || expiresIn < Date.now()) {
+    //   localStorage.removeItem('LIVRENSEMBLE_TOKEN_EXPIRED_AT')
+    //   localStorage.removeItem('LIVRENSEMBLE_TOKEN')
+    //   return
+    // }
 
     const localToken = localStorage.getItem('LIVRENSEMBLE_TOKEN')
     if (localToken) setToken(localToken)
