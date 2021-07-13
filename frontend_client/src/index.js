@@ -3,14 +3,26 @@ import ReactDOM from 'react-dom'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
 import axios from 'axios'
+import Application from 'react-rainbow-components/components/Application'
+
 import './index.css'
+
+const theme = {
+  rainbow: {
+    palette: {
+      brand: '#FC0',
+    },
+  },
+}
 
 axios.defaults.baseURL = process.env.REACT_APP_HOST_URL
 axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*'
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Application theme={theme}>
+      <App />
+    </Application>
   </React.StrictMode>,
   document.getElementById('root')
 )
