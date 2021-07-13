@@ -2,7 +2,8 @@ import { useState } from 'react'
 import Card from 'react-rainbow-components/components/Card'
 import Input from 'react-rainbow-components/components/Input'
 import Button from 'react-rainbow-components/components/Button'
-import { Email, Lock } from '../../components/icons'
+import { FaAt, FaLock } from 'react-icons/fa'
+
 import { useHistory } from 'react-router-dom'
 import { useMutation } from 'react-query'
 import { useAlert } from 'react-alert'
@@ -43,7 +44,7 @@ const Register = () => {
         </div>
         <article className="mt-6">
           <Input
-            icon={<Email />}
+            icon={<FaAt className="text-yellow-500" />}
             name="email"
             label="Email"
             defaultMessage="Email address"
@@ -58,7 +59,7 @@ const Register = () => {
             </div>
           )}
           <Input
-            icon={<Lock />}
+            icon={<FaLock className="text-yellow-500" />}
             className="mt-3"
             name="password"
             label="Password"
@@ -75,7 +76,7 @@ const Register = () => {
           )}
 
           <Input
-            icon={<Lock />}
+            icon={<FaLock className="text-yellow-500" />}
             className="mt-3"
             name="password confirmation"
             label="Password Confirmation"

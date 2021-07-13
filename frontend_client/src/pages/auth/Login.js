@@ -2,8 +2,8 @@ import { useState } from 'react'
 import Card from 'react-rainbow-components/components/Card'
 import Input from 'react-rainbow-components/components/Input'
 import Button from 'react-rainbow-components/components/Button'
-import { Email, Lock } from '../../components/icons'
-import { Link, useHistory } from 'react-router-dom'
+import { FaLock, FaAt } from 'react-icons/fa'
+import { Link } from 'react-router-dom'
 import { useMutation } from 'react-query'
 import axios from 'axios'
 import logo from '../../logo.png'
@@ -11,7 +11,6 @@ import logo from '../../logo.png'
 const Login = ({ setToken }) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const history = useHistory()
 
   const login = useMutation(
     ({ email, password }) => axios.post('auth/login', { email, password }),
@@ -24,7 +23,6 @@ const Login = ({ setToken }) => {
           'LIVRENSEMBLE_TOKEN_EXPIRED_AT',
           Date.now() + data.expires_in - 60
         )
-        history.push('/')
       },
     }
   )
@@ -49,7 +47,7 @@ const Login = ({ setToken }) => {
         </div>
         <article className="mt-6">
           <Input
-            icon={<Email />}
+            icon={<FaAt className="text-yellow-500" />}
             name="email"
             label="Email"
             defaultMessage="Email address"
@@ -64,7 +62,7 @@ const Login = ({ setToken }) => {
             </div>
           )}
           <Input
-            icon={<Lock />}
+            icon={<FaLock className="text-yellow-500" />}
             className="mt-3"
             name="password"
             label="Password"

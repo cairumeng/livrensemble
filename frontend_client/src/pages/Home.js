@@ -4,8 +4,8 @@ import { useMutation } from 'react-query'
 import Lookup from 'react-rainbow-components/components/Lookup'
 import { useHistory } from 'react-router-dom'
 
-const Index = () => {
-  const [_, setCity] = useState()
+const Home = () => {
+  const [, setCity] = useState()
   const [options, setOptions] = useState(null)
   const history = useHistory()
 
@@ -53,4 +53,4 @@ const Index = () => {
   )
 }
 
-export default Index
+export default Home
