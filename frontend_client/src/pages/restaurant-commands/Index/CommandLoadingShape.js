@@ -1,11 +1,10 @@
 import Card from 'react-rainbow-components/components/Card'
 import LoadingShape from 'react-rainbow-components/components/LoadingShape'
-import { Link } from 'react-router-dom'
 
 const CommandLoadingShape = () =>
   [0, 1, 2, 3].map((i) => (
     <Card className="relative mb-3 block px-3 py-5" key={i}>
-      <Link className="flex items-start no-underline hover:no-underline">
+      <div className="flex items-start no-underline hover:no-underline">
         <div className=" flex items-stretch justify-between sm:justify-items-start sm:flex-col">
           <div className="flex pr-5 md:pr-4  pr-0">
             <LoadingShape
@@ -36,7 +35,7 @@ const CommandLoadingShape = () =>
             </div>
           </div>
         </div>
-      </Link>
+      </div>
     </Card>
   ))
 

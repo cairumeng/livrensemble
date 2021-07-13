@@ -27,4 +27,14 @@ class RestaurantCommandsController extends Controller
             'commands' => $commands
         ]);
     }
+
+    public function show($id)
+    {
+        $command = RestaurantCommand::with('restaurant')->findOrFail($id);
+        return response()->json([
+            'command' => $command->getAttributes(),
+            'restaurant' => $command->restaurant,
+
+        ]);
+    }
 }

@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import CommandItem from './components/CommandItem'
-import CommandLoadingShape from './components/CommandLoadingShape'
 import { useLocation } from 'react-router-dom'
 import { useMutation } from 'react-query'
-import Carousel from './components/Carousel'
 import Pagination from 'react-rainbow-components/components/Pagination'
+
+import Carousel from './Carousel'
+import CommandItem from './CommandItem'
+import CommandLoadingShape from './CommandLoadingShape'
 
 const Index = () => {
   const [city, setCity] = useState()
@@ -19,11 +20,11 @@ const Index = () => {
   const changePageHandler = (_, page) => {
     setActivePage(page)
   }
+
   const getCommands = useMutation(
     () => axios.get(`restaurant-commands?cityId=${cityId}&page=${activePage}`),
     {
       onSuccess: ({ data }) => {
-        console.log(data)
         setCommands(data.commands.data)
         setCity(data.city)
         setTotalPage(data.commands.last_page)
@@ -51,7 +52,7 @@ const Index = () => {
       )}
 
       <Pagination
-        className="rainbow-m_auto"
+        className="mx-auto"
         pages={totalPage}
         activePage={activePage}
         onChange={changePageHandler}
