@@ -13,13 +13,11 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        $users = Role::all()->map(function ($role) {
-            return factory(User::class)->make([
+        Role::all()->each(function ($role) {
+            $users = factory(User::class, 10)->make([
                 'role_id' => $role->id,
-                'email' => $role->type . '@test.com',
             ]);
+            User::insert($users->makeVisible(['password', 'remember_token'])->toArray());
         });
-
-        User::insert($users->makeVisible(['password', 'remember_token'])->toArray());
     }
 }

@@ -6,7 +6,5 @@ use App\Models\DishCategory;
 use Faker\Generator as Faker;
 
 $factory->define(DishCategory::class, function (Faker $faker) {
-    return [
-        //
-    ];
+    return [];
 });

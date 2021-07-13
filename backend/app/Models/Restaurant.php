@@ -12,4 +12,9 @@ class Restaurant extends Model
     {
         return  $this->hasMany(RestaurantCommand::class);
     }
+
+    public function dishCategories()
+    {
+        return $this->hasMany(DishCategory::class)->select(['id', 'restaurant_id', 'name']);
+    }
 }

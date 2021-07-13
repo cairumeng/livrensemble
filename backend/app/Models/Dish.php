@@ -10,6 +10,11 @@ class Dish extends Model
         'dish_category_id', 'name', 'price', 'unit', 'avatar', 'ingredients', 'description', 'spicy_level', 'promo'
     ];
     protected $casts = [
-        'price' => 'decimal', 'spicy_level' => 'number', 'promo' => 'decimal'
+        'price' => 'decimal:2', 'spicy_level' => 'number', 'promo' => 'decimal:2'
     ];
+
+    public function dishCategory()
+    {
+        return $this->belongsTo(DishCategory::class);
+    }
 }
