@@ -15,7 +15,6 @@ export const CartContextProvider = ({ children }) => {
   const [cartInfo, setCartInfo] = useState({})
   const user = useAuth()
   const history = useHistory()
-  const { id } = useParams()
 
   const { getLocalItem, setLocalItem, removeLocalItem } = useLocalStorage()
 
@@ -72,11 +71,11 @@ export const CartContextProvider = ({ children }) => {
     },
   })
 
-  const addToCart = (dish, quantity = 1) => {
+  const addToCart = (commandId, cartItem, quantity = 1) => {
     let targetItem = null
     let nextCartItems = cartItems
       .map((item) => {
-        if (item.id === dish.id) {
+        if (item.dish_id === cartItem.dish_id) {
           targetItem = item
           return { ...item, quantity: item.quantity + quantity }
         }
@@ -84,25 +83,30 @@ export const CartContextProvider = ({ children }) => {
       })
       .filter((item) => item.quantity !== 0)
 
-    nextCartItems = targetItem
-      ? nextCartItems
-      : [...cartItems, { ...dish, quantity }]
-
     if (!user) {
+      if (!targetItem) nextCartItems = [...cartItems, { ...cartItem, quantity }]
+
       setLocalCart(nextCartItems)
-      setLocalCartInfo({ commandId: id })
-    } else {
-      if (targetItem) {
-        axios.put(`cart-items/${targetItem.id}`, { quantity })
-      } else {
-        axios.post('cart-items', {
-          dishId: dish.id,
-          commandId: cartInfo.commandId,
-        })
-      }
+      setLocalCartInfo({ commandId })
+      setCartItems(nextCartItems)
+      !cartInfo.commandId && setCartInfo({ commandId })
+      return
     }
-    setCartItems(nextCartItems)
-    setCartInfo({ commandId: id })
+
+    if (targetItem) {
+      axios.put(`cart-items/${targetItem.id}`, { quantity })
+      setCartItems(nextCartItems)
+    } else {
+      axios
+        .post('cart-items', {
+          dishId: cartItem.dish_id,
+          commandId,
+        })
+        .then(({ data }) => {
+          setCartItems([...cartItems, data.data])
+          !cartInfo.commandId && setCartInfo({ commandId })
+        })
+    }
   }
 
   return (

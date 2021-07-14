@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CartItemResource;
 use App\Models\CartItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 
 class CartItemsController extends Controller
@@ -25,44 +25,31 @@ class CartItemsController extends Controller
         ];
 
         return response()->json([
-            'cartItems' => $cartItems->map(function ($item) {
-                return [
-                    'id' => $item->id,
-                    'dish_id' => $item->dish_id,
-                    'quantity' => $item->quantity,
-                    'name' => $item->dish->name,
-                    'price' => $item->dish->price,
-                    'promo' => $item->dish->promo
-                ];
-            }),
+            'cartItems' => CartItemResource::collection($cartItems),
             'cartInfo' => $cartInfo,
         ]);
     }
 
     public function scynchronize(Request $request)
     {
-        $dishes = $request->get('cartItems', []);
+        $cartItems = collect($request->get('cartItems', []));
         $commandId = $request->commandId;
-
         $userId = Auth::id();
         $cartItemsToAdd = [];
-        $cartItems = [];
-
         $currentDishIds = null;
+
         $currentCommand = CartItem::where('user_id', $userId)->first();
 
-        $now = Carbon::now();
-        foreach ($dishes as $dish) {
-            $cartItems[] = [
+        $cartItems = $cartItems->map(function ($item) use ($commandId, $userId) {
+            return [
                 'user_id' => $userId,
                 'restaurant_command_id' => $commandId,
-                'dish_id' => $dish['id'],
-                'quantity' => $dish['quantity'],
-                'created_at' => $now,
-                'updated_at' => $now,
+                'dish_id' => $item['dish_id'],
+                'quantity' => $item['quantity'],
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ];
-        }
-
+        });
 
         if ($currentCommand && ($currentCommand['restaurant_command_id'] != $commandId)) {
             CartItem::where('user_id', $userId)->delete();
@@ -74,10 +61,8 @@ class CartItemsController extends Controller
                     $cartItemsToAdd[] = $cartItem;
                 }
             }
-
             CartItem::insert($cartItemsToAdd);
         }
-
         return $this->index();
     }
 
@@ -92,13 +77,12 @@ class CartItemsController extends Controller
 
     public function store(Request $request)
     {
-        return CartItem::insert([
+        $cartItem = CartItem::create([
             'user_id' => Auth::id(),
             'restaurant_command_id' => $request->commandId,
             'dish_id' => $request->dishId,
             'quantity' => 1,
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
         ]);
+        return new CartItemResource($cartItem);
     }
 }

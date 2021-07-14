@@ -1,14 +1,14 @@
 import { FaPlus, FaMinus } from 'react-icons/fa'
 import { GiBrokenHeartZone } from 'react-icons/gi'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 import Button from 'react-rainbow-components/components/Button'
 import useCart from '../../../context/useCart'
 
 const getPrice = (item) => item.price * (1 - item.promo) * item.quantity
 
-const CartItemList = ({ cartItems, addToCart }) =>
+const CartItemList = ({ cartItems, addToCart, commandId }) =>
   cartItems.map((item) => (
-    <div key={item.id}>
+    <div key={item.dish_id}>
       <div className="flex justify-between mt-4">
         <div className="flex">
           <div className="font-bold">{item.quantity}</div>
@@ -20,14 +20,14 @@ const CartItemList = ({ cartItems, addToCart }) =>
         <Button
           variant="neutral"
           className="w-8 h-8 p-1 rounded-none"
-          onClick={() => addToCart(item, -1)}
+          onClick={() => addToCart(commandId, item, -1)}
         >
           <FaMinus className="text-blue-500" />
         </Button>
         <Button
           variant="neutral"
           className="w-8 h-8 p-1 rounded-none ml-2"
-          onClick={() => addToCart(item, 1)}
+          onClick={() => addToCart(commandId, item, 1)}
         >
           <FaPlus className="text-blue-500" />
         </Button>
@@ -47,6 +47,7 @@ const CartEmptyState = () => (
 
 const Cart = ({ goBackUrl }) => {
   const history = useHistory()
+  const { id } = useParams()
   const { cartItems, addToCart } = useCart()
 
   const totalReduction = cartItems?.reduce(
@@ -62,7 +63,11 @@ const Cart = ({ goBackUrl }) => {
           <CartEmptyState />
         ) : (
           <>
-            <CartItemList cartItems={cartItems} addToCart={addToCart} />
+            <CartItemList
+              cartItems={cartItems}
+              addToCart={addToCart}
+              commandId={id}
+            />
 
             <div>
               {totalReduction > 0 && (

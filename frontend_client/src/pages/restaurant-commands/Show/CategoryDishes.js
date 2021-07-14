@@ -1,6 +1,7 @@
 import { GiChiliPepper } from 'react-icons/gi'
 import { FaCartPlus } from 'react-icons/fa'
 import useCart from '../../../context/useCart'
+import { useParams } from 'react-router-dom'
 
 const SpicyLevel = ({ level }) => {
   const spicyLevel = new Array(level).fill(1)
@@ -36,6 +37,7 @@ const PriceTag = ({ price, promo }) => {
 
 const CategoryDishes = ({ category }) => {
   const { addToCart } = useCart()
+  const { id } = useParams()
 
   return (
     <>
@@ -71,7 +73,14 @@ const CategoryDishes = ({ category }) => {
             </div>
             <FaCartPlus
               className="mt-4 mr-4 flex-shrink-0 text-blue-500 cursor-pointer text-lg"
-              onClick={() => addToCart(dish)}
+              onClick={() =>
+                addToCart(id, {
+                  dish_id: dish.id,
+                  name: dish.name,
+                  price: dish.price,
+                  promo: dish.promo,
+                })
+              }
             />
           </div>
         ))}
