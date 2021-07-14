@@ -55,8 +55,10 @@ const Cart = ({ goBackUrl }) => {
     0
   )
   return (
-    <>
-      <div className="text-lg font-bold font-sans text-center my-4">Panier</div>
+    <div className="sticky top-0">
+      <div className="text-lg font-bold font-sans text-center my-4 ">
+        Panier
+      </div>
       <hr />
       <div className="px-5 divide-y">
         {cartItems.length === 0 ? (
@@ -105,7 +107,7 @@ const Cart = ({ goBackUrl }) => {
           <Button className="mt-10 w-full" variant="brand" label="Command" />
         </div>
       )}
-    </>
+    </div>
   )
 }
 

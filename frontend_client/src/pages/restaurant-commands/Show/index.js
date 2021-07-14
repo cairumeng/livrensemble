@@ -99,33 +99,35 @@ const Show = () => {
                 height: 200,
               }}
             />
-            <div className="ml-8 mt-5 mb-3">
+            <div className="ml-8 mt-5 pb-3">
               <div className="text-2xl font-bold">{name}</div>
               <span>{description}</span>
             </div>
-            <Tabset
-              id="tabset-1"
-              onSelect={(_, categoryId) => {
-                setSelectedCategoryId(categoryId.toString())
-              }}
-              activeTabName={selectedCategoryId}
-            >
-              {categories.map((category) => (
-                <AnchorLink
-                  href={`#category-${category.id}`}
-                  key={category.id}
-                  className="no-rainbow"
-                >
-                  <Tab
-                    key={category.id}
-                    label={category.name}
-                    name={category.id.toString()}
-                    ariaControls="primaryTab"
-                  />
-                </AnchorLink>
-              ))}
-            </Tabset>
           </div>
+          <Tabset
+            id="tabset-1"
+            className="sticky top-0 bg-yellow-500"
+            onSelect={(_, categoryId) => {
+              setSelectedCategoryId(categoryId.toString())
+            }}
+            activeTabName={selectedCategoryId}
+          >
+            {categories.map((category) => (
+              <AnchorLink
+                href={`#category-${category.id}`}
+                offset={64}
+                key={category.id}
+                className="no-rainbow"
+              >
+                <Tab
+                  key={category.id}
+                  label={category.name}
+                  name={category.id.toString()}
+                  ariaControls="primaryTab"
+                />
+              </AnchorLink>
+            ))}
+          </Tabset>
           <div>
             {getCategories.isLoading ? (
               <div>Loading</div>
