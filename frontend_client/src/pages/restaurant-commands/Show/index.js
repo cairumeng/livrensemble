@@ -16,7 +16,7 @@ import useCart from '../../../context/useCart'
 const Show = () => {
   const { id } = useParams()
   const history = useHistory()
-  const { cartInfo, getLocalCartInfo } = useCart()
+  const { cartInfo } = useCart()
 
   const [command, setCommand] = useState(null)
   const [restaurant, setRestaurant] = useState(null)
@@ -29,20 +29,21 @@ const Show = () => {
     getCategories.mutate()
   }, [id])
 
+  useEffect(() => {
+    if (cartInfo.commandId) {
+      setCartModalOpen(cartInfo.commandId != id)
+    }
+  }, [cartInfo.commandId, id])
+
   const getCommand = useMutation(
     () => axios.get(`/restaurant-commands/${id}`),
     {
       onSuccess: ({ data }) => {
         setCommand(data.command)
         setRestaurant(data.restaurant)
-        const localCartInfo = getLocalCartInfo()
-        if (localCartInfo.commandId) {
-          setCartModalOpen(localCartInfo.commandId != id)
-        }
       },
     }
   )
-
   const getCategories = useMutation(
     () => axios.get(`/dish-categories?commandId=${id}`),
     {

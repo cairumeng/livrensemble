@@ -89,10 +89,9 @@ const Cart = ({ goBackUrl }) => {
           <Button
             className="mt-5"
             variant="brand"
+            label="Go back"
             onClick={() => history.push(goBackUrl)}
-          >
-            Go back
-          </Button>
+          />
         </div>
       )}
     </>
