@@ -39,7 +39,7 @@ const CategoryDishes = ({ category }) => {
 
   return (
     <>
-      <div className="flex justify-between">
+      <div className="flex justify-between" id={`category-${category.id}`}>
         <div className="text-xl pt-4 pl-4 text-black font-bold">
           {category.name}
         </div>

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
 import { useMutation } from 'react-query'
+import AnchorLink from 'react-anchor-link-smooth-scroll'
 
 import Button from 'react-rainbow-components/components/Button'
 import Modal from 'react-rainbow-components/components/Modal'
@@ -110,12 +111,18 @@ const Show = () => {
               activeTabName={selectedCategoryId}
             >
               {categories.map((category) => (
-                <Tab
+                <AnchorLink
+                  href={`#category-${category.id}`}
                   key={category.id}
-                  label={category.name}
-                  name={category.id.toString()}
-                  ariaControls="primaryTab"
-                />
+                  className="no-rainbow"
+                >
+                  <Tab
+                    key={category.id}
+                    label={category.name}
+                    name={category.id.toString()}
+                    ariaControls="primaryTab"
+                  />
+                </AnchorLink>
               ))}
             </Tabset>
           </div>
