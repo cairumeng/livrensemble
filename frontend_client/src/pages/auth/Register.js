@@ -95,7 +95,7 @@ const Register = () => {
           <Button
             type="submit"
             className="mt-4 w-full"
-            variant="brand"
+            variant="success"
             isLoading={register.isLoading}
             onClick={(e) => handleSubmit(e)}
           >

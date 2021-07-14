@@ -10,7 +10,8 @@ import './index.css'
 const theme = {
   rainbow: {
     palette: {
-      brand: '#FC0',
+      success: '#FC0',
+      brand: '#3B82F6',
     },
   },
 }

@@ -80,7 +80,7 @@ const Login = ({ setToken }) => {
           <Button
             type="submit"
             className="mt-4 w-full"
-            variant="brand"
+            variant="success"
             isLoading={login.isLoading}
             onClick={(e) => handleSubmit(e)}
           >

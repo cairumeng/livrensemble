@@ -77,7 +77,7 @@ const Show = () => {
 
             <Button
               className="ml-2"
-              variant="brand"
+              variant="success"
               label="Go back"
               onClick={() => history.push(goBackUrl)}
             />

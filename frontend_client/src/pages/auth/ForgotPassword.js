@@ -50,7 +50,7 @@ const ForgotPassword = () => {
           <Button
             type="submit"
             className="mt-4 w-full"
-            variant="brand"
+            variant="success"
             isLoading={forgotPassword.isLoading}
             onClick={handleSubmit}
           >

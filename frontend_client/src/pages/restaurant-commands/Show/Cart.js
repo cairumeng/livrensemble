@@ -88,10 +88,16 @@ const Cart = ({ goBackUrl }) => {
         <div className="text-right px-5">
           <Button
             className="mt-5"
-            variant="brand"
+            variant="success"
             label="Go back"
             onClick={() => history.push(goBackUrl)}
           />
+        </div>
+      )}
+
+      {cartItems.length > 0 && (
+        <div className="p-5">
+          <Button className="mt-10 w-full" variant="brand" label="Command" />
         </div>
       )}
     </>
