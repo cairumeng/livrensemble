@@ -81,10 +81,13 @@ class CartItemsController extends Controller
         return $this->index();
     }
 
-    public function update(Request $request)
+    public function update(Request $request, CartItem $cartItem)
     {
-        log::debug([$request, $request->id, $request->quantity]);
-        return CartItem::where('user_id', Auth::id())->where('dish_id', $request->id)->increment('quantity', $request->quantity);
+        $newQuantity = $cartItem->quantity + $request->quantity;
+        if ($newQuantity <= 0) {
+            return $cartItem->delete();
+        }
+        return $cartItem->increment('quantity', intval($request->quantity));
     }
 
     public function store(Request $request)

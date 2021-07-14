@@ -93,7 +93,7 @@ export const CartContextProvider = ({ children }) => {
       setLocalCartInfo({ commandId: id })
     } else {
       if (targetItem) {
-        axios.put(`cart-items/${targetItem.id}`, quantity)
+        axios.put(`cart-items/${targetItem.id}`, { quantity })
       } else {
         axios.post('cart-items', {
           dishId: dish.id,
