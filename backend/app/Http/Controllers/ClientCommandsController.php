@@ -6,15 +6,15 @@ use App\Models\Address;
 use App\Models\CartItem;
 use Illuminate\Support\Arr;
 use App\Models\ClientCommand;
+use App\Models\ClientCommandDish;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 
 class ClientCommandsController extends Controller
 {
     public function store()
     {
-        $clientCommand = DB::transaction(function () {
+        $clientCommandId = DB::transaction(function () {
             $address = Address::where('user_id', Auth::id())->first();
             $addressData = Arr::only(
                 request('address'),
@@ -31,7 +31,7 @@ class ClientCommandsController extends Controller
             }
             $cartItems = CartItem::with('dish')->where('user_id', Auth::id())->get();
             $amount = $cartItems->sum(function ($item) {
-                return $item->dish->price * $item->quantity;
+                return $item->dish->price * (1 - $item->dish->promo) * $item->quantity;
             });
             $attributes = [
                 'user_id' => Auth::id(),
@@ -42,15 +42,20 @@ class ClientCommandsController extends Controller
             ];
 
             $clientCommand = ClientCommand::create($attributes);
-            Log::debug($clientCommand->toArray());
-            return $clientCommand;
+            $clientCommandDishes = [];
+            foreach ($cartItems as $item) {
+                $clientCommandDishes[] = [
+                    'client_command_id' => $clientCommand->id,
+                    'dish_id' => $item->dish_id,
+                    'quantity' => $item->quantity,
+                    'price' => $item->dish->price * (1 - $item->dish->promo),
+                    'unit' => $item->dish->unit
+                ];
+            }
+            ClientCommandDish::insert($clientCommandDishes);
+            CartItem::where('user_id', Auth::id())->delete();
+            return $clientCommand->id;
         });
-
-        return response()->json();
-        // return ClientCommand::create([
-        //     'user_id' => Auth::id(),
-        //     // 'restaurant_command_id'=>
-
-        // ]);
+        return response()->json(['clientCommandId' => $clientCommandId]);
     }
 }
