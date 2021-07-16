@@ -6,15 +6,18 @@ import Button from 'react-rainbow-components/components/Button'
 import { FaLock, FaAt } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import { useMutation } from 'react-query'
-import useAuth from '../../context/useAuth'
+import useAuth, { TOKEN_EXPIRED_AT, TOKEN } from '../../context/useAuth'
+
 import axios from 'axios'
 import logo from '../../logo.png'
+import useLocalStorage from '../../hooks/useLocalStorage'
 
 const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const history = useHistory()
   const { setToken } = useAuth()
+  const { setLocalItem } = useLocalStorage()
 
   const login = useMutation(
     ({ email, password }) => axios.post('auth/login', { email, password }),
@@ -22,11 +25,8 @@ const Login = () => {
       onSuccess: ({ data }) => {
         const token = `Bearer ${data.access_token}`
         setToken(token)
-        localStorage.setItem('LIVRENSEMBLE_TOKEN', token)
-        localStorage.setItem(
-          'LIVRENSEMBLE_TOKEN_EXPIRED_AT',
-          Date.now() + data.expires_in - 60
-        )
+        setLocalItem(TOKEN, token)
+        setLocalItem(TOKEN_EXPIRED_AT, Date.now() + data.expires_in - 60)
         history.goBack()
       },
     }

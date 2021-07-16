@@ -1,32 +1,44 @@
 import { useState, useEffect } from 'react'
 import { useContext, createContext } from 'react'
 import axios from 'axios'
+import useLocalStorage from '../hooks/useLocalStorage'
+import { useMutation } from 'react-query'
 export const AuthContext = createContext({})
+
+export const TOKEN_EXPIRED_AT = 'LIVRENSEMBLE_TOKEN_EXPIRED_AT'
+export const TOKEN = 'LIVRENSEMBLE_TOKEN'
 
 export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState()
   const [token, setToken] = useState('')
+  const { removeLocalItem, getLocalItem } = useLocalStorage()
 
   useEffect(() => {
-    // const expiresIn = localStorage.getItem('LIVRENSEMBLE_TOKEN_EXPIRED_AT')
-
-    // if (!expiresIn || expiresIn < Date.now()) {
-    //   localStorage.removeItem('LIVRENSEMBLE_TOKEN_EXPIRED_AT')
-    //   localStorage.removeItem('LIVRENSEMBLE_TOKEN')
-    //   return
-    // }
-
-    const localToken = localStorage.getItem('LIVRENSEMBLE_TOKEN')
+    const expiresIn = getLocalItem(TOKEN_EXPIRED_AT)
+    if (!expiresIn || expiresIn < Date.now()) {
+      removeLocalItem(TOKEN_EXPIRED_AT)
+      removeLocalItem(TOKEN)
+      return
+    }
+    const localToken = getLocalItem(TOKEN)
     if (localToken) setToken(localToken)
   }, [])
 
+  const getProfile = useMutation(
+    () => {
+      axios.post('auth/me')
+    },
+    {
+      onSuccess: ({ data }) => {
+        setUser(data)
+      },
+    }
+  )
+
   useEffect(() => {
     if (!token) return
-
     axios.defaults.headers.common['Authorization'] = token
-    axios.post('auth/me').then(({ data }) => {
-      setUser(data)
-    })
+    getProfile.mutate()
   }, [token])
 
   return (
