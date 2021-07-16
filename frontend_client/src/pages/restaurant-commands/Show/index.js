@@ -17,7 +17,7 @@ import useCart from '../../../context/useCart'
 const Show = () => {
   const { id } = useParams()
   const history = useHistory()
-  const { cartInfo } = useCart()
+  const { cartInfo, cartItems } = useCart()
 
   const [command, setCommand] = useState(null)
   const [restaurant, setRestaurant] = useState(null)
@@ -142,7 +142,7 @@ const Show = () => {
         <div className="w-1/3 shadow">
           <Cart
             goBackUrl={isDifferentRestaurant && goBackUrl}
-            showCommandButton={true}
+            showCommandButton={cartItems.length > 0}
           />
         </div>
       </div>
