@@ -8,7 +8,7 @@ import axios from 'axios'
 
 const Header = () => {
   const [showProfile, setShowProfile] = useState(false)
-  const user = useAuth()
+  const { user } = useAuth()
 
   const profileRef = useClickOutside({
     clickHandler: () => setShowProfile(false),

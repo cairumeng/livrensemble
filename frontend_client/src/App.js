@@ -1,7 +1,5 @@
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
-import axios from 'axios'
 import { QueryClientProvider, QueryClient } from 'react-query'
-import { useEffect, useState } from 'react'
 import { positions, Provider } from 'react-alert'
 import AlertTemplate from 'react-alert-template-basic'
 
@@ -17,12 +15,11 @@ import RestaurantCommandsShow from './pages/restaurant-commands/Show'
 
 import Header from './components/Header'
 
-import { AuthContext } from './context/useAuth'
+import useAuth, { AuthContextProvider } from './context/useAuth'
 import { CartContextProvider } from './context/useCart'
 
 import 'tailwindcss/tailwind.css'
 import './App.css'
-import ProtectedRoute from './components/ProtectedRoute'
 
 const options = {
   timeout: 5000,
@@ -30,75 +27,56 @@ const options = {
 }
 
 function App() {
-  const [user, setUser] = useState(null)
-  const [token, setToken] = useState('')
+  const { user } = useAuth()
+  return (
+    <>
+      <Header />
+      <Switch>
+        {!user && (
+          <>
+            <Route path="/login" component={Login} />
+            <Route path="/register" component={Register} />
+            <Route path="/password-forgot" component={ForgotPassword} />
+            <Route path="/password-reset" component={ResetPassword} />
+          </>
+        )}
+        <Route path="/" exact component={Home} />
+
+        <Route
+          path="/restaurant-commands"
+          exact
+          component={RestaurantCommandsIndex}
+        />
+        <Route
+          path="/restaurant-commands/:id"
+          exact
+          component={RestaurantCommandsShow}
+        />
+        {user && (
+          <>
+            <Route path="/checkout" exact component={Checkout} />
+          </>
+        )}
+      </Switch>
+    </>
+  )
+}
+
+const AppContextsWrapper = (App) => () => {
   const queryClient = new QueryClient()
-
-  useEffect(() => {
-    // const expiresIn = localStorage.getItem('LIVRENSEMBLE_TOKEN_EXPIRED_AT')
-
-    // if (!expiresIn || expiresIn < Date.now()) {
-    //   localStorage.removeItem('LIVRENSEMBLE_TOKEN_EXPIRED_AT')
-    //   localStorage.removeItem('LIVRENSEMBLE_TOKEN')
-    //   return
-    // }
-
-    const localToken = localStorage.getItem('LIVRENSEMBLE_TOKEN')
-    if (localToken) setToken(localToken)
-  }, [])
-
-  useEffect(() => {
-    if (!token) return
-
-    axios.defaults.headers.common['Authorization'] = token
-    axios.post('auth/me').then(({ data }) => {
-      setUser(data)
-    })
-  }, [token])
-
   return (
     <Router>
       <Provider template={AlertTemplate} {...options}>
         <QueryClientProvider client={queryClient}>
-          <AuthContext.Provider value={user}>
+          <AuthContextProvider>
             <CartContextProvider>
-              <Header />
-              <Switch>
-                <Route path="/" exact component={Home} />
-                <ProtectedRoute
-                  condition={!user}
-                  failedRedirectUrl="/"
-                  path="/login"
-                  render={() => <Login setToken={setToken} />}
-                />
-                <ProtectedRoute
-                  condition={!user}
-                  failedRedirectUrl="/"
-                  path="/register"
-                  component={Register}
-                />
-                <Route path="/password-forgot" component={ForgotPassword} />
-                <Route path="/password-reset" component={ResetPassword} />
-
-                <Route
-                  path="/restaurant-commands"
-                  exact
-                  component={RestaurantCommandsIndex}
-                />
-                <Route
-                  path="/restaurant-commands/:id"
-                  exact
-                  component={RestaurantCommandsShow}
-                />
-                {/* checkout user condition has problem */}
-                <Route path="/checkout" exact component={Checkout} />
-              </Switch>
+              <App />
             </CartContextProvider>
-          </AuthContext.Provider>
+          </AuthContextProvider>
         </QueryClientProvider>
       </Provider>
     </Router>
   )
 }
 
-export default App
+export default AppContextsWrapper(App)
