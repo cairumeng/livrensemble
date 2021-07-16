@@ -89,7 +89,7 @@ const Show = () => {
         <p>How would you like to deal with your previous cart?</p>
       </Modal>
       <div className="flex justify-between">
-        <div className="w-full height-20">
+        <div className="w-full lg:w-3/4 height-20">
           <div className="bg-gray-50">
             <div
               style={{

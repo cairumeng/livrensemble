@@ -1,13 +1,16 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory, useRouteMatch } from 'react-router-dom'
 import classNames from 'classnames'
 import useClickOutside from '../hooks/useClickOutside'
 import logo from '../logo-pure.png'
 import useAuth from '../context/useAuth'
+import { FaLongArrowAltLeft } from 'react-icons/fa'
 
 const Header = () => {
   const [showProfile, setShowProfile] = useState(false)
   const { user, logout } = useAuth()
+  const isHomePage = useRouteMatch('/').isExact
+  const history = useHistory()
 
   const profileRef = useClickOutside({
     clickHandler: () => setShowProfile(false),
@@ -59,19 +62,19 @@ const Header = () => {
               </svg>
             </button>
           </div>
-          <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
+          <div className="flex justify-between sm:items-stretch sm:justify-start">
             <div className="flex-shrink-0 flex items-center">
+              {!isHomePage && (
+                <FaLongArrowAltLeft
+                  className="cursor-pointer text-2xl mr-2"
+                  onClick={() => history.goBack()}
+                />
+              )}
+
               <img className="block h-10 w-auto" src={logo} alt="logo" />
             </div>
             <div className="hidden sm:block sm:ml-6">
               <div className="flex space-x-4">
-                <Link
-                  to="/"
-                  className="text-black hover:bg-gray-100 hover:text-black px-3 py-2 rounded-md text-sm font-medium no-rainbow"
-                >
-                  Home
-                </Link>
-
                 {!user && (
                   <>
                     <Link
@@ -94,25 +97,6 @@ const Header = () => {
           </div>
           {user && (
             <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-              <button className="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
-                <span className="sr-only">View notifications</span>
-                <svg
-                  className="h-6 w-6"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-                  />
-                </svg>
-              </button>
-
               <div className="ml-3 relative" ref={profileRef}>
                 <button
                   type="button"
