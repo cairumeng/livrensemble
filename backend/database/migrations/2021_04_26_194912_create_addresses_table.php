@@ -21,7 +21,7 @@ class CreateAddressesTable extends Migration
             $table->string('name');
             $table->string('phone');
             $table->string('wechat')->nullable();
-            $table->boolean('is_default');
+            $table->boolean('is_default')->nullable();
             $table->timestamps();
         });
     }
