@@ -13,7 +13,7 @@ export const CartContext = createContext()
 export const CartContextProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([])
   const [cartInfo, setCartInfo] = useState({})
-  const user = useAuth()
+  const { user } = useAuth()
   const history = useHistory()
 
   const { getLocalItem, setLocalItem, removeLocalItem } = useLocalStorage()

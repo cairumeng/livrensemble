@@ -1,7 +1,5 @@
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
-import { QueryClientProvider, QueryClient } from 'react-query'
-import { positions, Provider } from 'react-alert'
-import AlertTemplate from 'react-alert-template-basic'
+import { Switch, Route } from 'react-router-dom'
+import Spinner from 'react-rainbow-components/components/Spinner'
 
 import Login from './pages/auth/Login'
 import Register from './pages/auth/Register'
@@ -14,33 +12,34 @@ import RestaurantCommandsIndex from './pages/restaurant-commands/Index'
 import RestaurantCommandsShow from './pages/restaurant-commands/Show'
 
 import Header from './components/Header'
-
-import useAuth, { AuthContextProvider } from './context/useAuth'
-import { CartContextProvider } from './context/useCart'
+import useAuth from './context/useAuth'
+import AppContextsWrapper from './AppContextsWrapper'
 
 import 'tailwindcss/tailwind.css'
 import './App.css'
 
-const options = {
-  timeout: 5000,
-  position: positions.BOTTOM_CENTER,
-}
-
 function App() {
-  const { user } = useAuth()
+  const { user, getProfileMutation, getLocalToken } = useAuth()
+  if (
+    getLocalToken() &&
+    (getProfileMutation.isIdle || getProfileMutation.isLoading)
+  )
+    return <Spinner />
+
   return (
     <>
       <Header />
       <Switch>
+        <Route path="/" exact component={Home} />
+
         {!user && (
           <>
-            <Route path="/login" component={Login} />
-            <Route path="/register" component={Register} />
-            <Route path="/password-forgot" component={ForgotPassword} />
-            <Route path="/password-reset" component={ResetPassword} />
+            <Route path="/login" exact component={Login} />
+            <Route path="/register" exact component={Register} />
+            <Route path="/password-forgot" exact component={ForgotPassword} />
+            <Route path="/password-reset" exact component={ResetPassword} />
           </>
         )}
-        <Route path="/" exact component={Home} />
 
         <Route
           path="/restaurant-commands"
@@ -61,22 +60,4 @@ function App() {
     </>
   )
 }
-
-const AppContextsWrapper = (App) => () => {
-  const queryClient = new QueryClient()
-  return (
-    <Router>
-      <Provider template={AlertTemplate} {...options}>
-        <QueryClientProvider client={queryClient}>
-          <AuthContextProvider>
-            <CartContextProvider>
-              <App />
-            </CartContextProvider>
-          </AuthContextProvider>
-        </QueryClientProvider>
-      </Provider>
-    </Router>
-  )
-}
-
 export default AppContextsWrapper(App)

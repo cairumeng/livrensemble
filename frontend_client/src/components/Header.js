@@ -4,20 +4,14 @@ import classNames from 'classnames'
 import useClickOutside from '../hooks/useClickOutside'
 import logo from '../logo-pure.png'
 import useAuth from '../context/useAuth'
-import axios from 'axios'
 
 const Header = () => {
   const [showProfile, setShowProfile] = useState(false)
-  const { user } = useAuth()
+  const { user, logout } = useAuth()
 
   const profileRef = useClickOutside({
     clickHandler: () => setShowProfile(false),
   })
-  const logout = () => {
-    axios.post('auth/logout')
-    localStorage.removeItem('LIVRENSEMBLE_TOKEN')
-    window.location.reload()
-  }
 
   return (
     <nav className="bg-gray-50">
