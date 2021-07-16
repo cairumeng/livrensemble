@@ -140,7 +140,10 @@ const Show = () => {
         </div>
 
         <div className="w-1/3 shadow">
-          <Cart goBackUrl={isDifferentRestaurant && goBackUrl} />
+          <Cart
+            goBackUrl={isDifferentRestaurant && goBackUrl}
+            showCommandButton={true}
+          />
         </div>
       </div>
     </>

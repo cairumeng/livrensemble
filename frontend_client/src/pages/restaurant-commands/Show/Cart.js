@@ -1,6 +1,7 @@
+import { useState } from 'react'
 import { FaPlus, FaMinus } from 'react-icons/fa'
 import { GiBrokenHeartZone } from 'react-icons/gi'
-import { useHistory, useParams } from 'react-router-dom'
+import { useHistory, useLocation, useParams } from 'react-router-dom'
 import Button from 'react-rainbow-components/components/Button'
 import useCart from '../../../context/useCart'
 
@@ -45,15 +46,15 @@ const CartEmptyState = () => (
   </div>
 )
 
-const Cart = ({ goBackUrl }) => {
+const Cart = ({ goBackUrl, showCommandButton }) => {
   const history = useHistory()
   const { id } = useParams()
   const { cartItems, addToCart } = useCart()
-
   const totalReduction = cartItems?.reduce(
     (reduction, item) => reduction + item.price * item.promo * item.quantity,
     0
   )
+
   return (
     <div className="sticky top-0">
       <div className="text-lg font-bold font-sans text-center my-4 ">
@@ -102,9 +103,14 @@ const Cart = ({ goBackUrl }) => {
         </div>
       )}
 
-      {cartItems.length > 0 && (
+      {showCommandButton && (
         <div className="p-5">
-          <Button className="mt-10 w-full" variant="brand" label="Command" />
+          <Button
+            className="mt-10 w-full"
+            variant="brand"
+            label="Command"
+            onClick={() => history.push('/checkout')}
+          />
         </div>
       )}
     </div>
