@@ -3,7 +3,7 @@ import { useMutation } from 'react-query'
 import axios from 'axios'
 import useAuth from './useAuth'
 import useLocalStorage from '../hooks/useLocalStorage'
-import { useHistory, useParams } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 const CART = 'LIVRENSEMBLE_CART'
 const CART_INFO = 'LIVRENSEMBLE_CART_INFO'

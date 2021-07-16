@@ -1,7 +1,6 @@
-import { useState } from 'react'
 import { FaPlus, FaMinus } from 'react-icons/fa'
 import { GiBrokenHeartZone } from 'react-icons/gi'
-import { useHistory, useLocation, useParams } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 import Button from 'react-rainbow-components/components/Button'
 import useCart from '../../../context/useCart'
 
