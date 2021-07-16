@@ -10,14 +10,19 @@ import Register from './pages/auth/Register'
 import ForgotPassword from './pages/auth/ForgotPassword'
 import ResetPassword from './pages/auth/ResetPassword'
 import Home from './pages/Home'
+import Checkout from './pages/Checkout'
+
 import RestaurantCommandsIndex from './pages/restaurant-commands/Index'
 import RestaurantCommandsShow from './pages/restaurant-commands/Show'
+
+import Header from './components/Header'
+
 import { AuthContext } from './context/useAuth'
 import { CartContextProvider } from './context/useCart'
-import Header from './components/Header'
 
 import 'tailwindcss/tailwind.css'
 import './App.css'
+import ProtectedRoute from './components/ProtectedRoute'
 
 const options = {
   timeout: 5000,
@@ -60,11 +65,18 @@ function App() {
               <Header />
               <Switch>
                 <Route path="/" exact component={Home} />
-                <Route
+                <ProtectedRoute
+                  condition={!user}
+                  failedRedirectUrl="/"
                   path="/login"
                   render={() => <Login setToken={setToken} />}
                 />
-                <Route path="/register" component={Register} />
+                <ProtectedRoute
+                  condition={!user}
+                  failedRedirectUrl="/"
+                  path="/register"
+                  component={Register}
+                />
                 <Route path="/password-forgot" component={ForgotPassword} />
                 <Route path="/password-reset" component={ResetPassword} />
 
@@ -78,6 +90,8 @@ function App() {
                   exact
                   component={RestaurantCommandsShow}
                 />
+                {/* checkout user condition has problem */}
+                <Route path="/checkout" exact component={Checkout} />
               </Switch>
             </CartContextProvider>
           </AuthContext.Provider>

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import Card from 'react-rainbow-components/components/Card'
 import Input from 'react-rainbow-components/components/Input'
 import Button from 'react-rainbow-components/components/Button'
@@ -11,6 +12,7 @@ import logo from '../../logo.png'
 const Login = ({ setToken }) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const history = useHistory()
 
   const login = useMutation(
     ({ email, password }) => axios.post('auth/login', { email, password }),
@@ -23,6 +25,7 @@ const Login = ({ setToken }) => {
           'LIVRENSEMBLE_TOKEN_EXPIRED_AT',
           Date.now() + data.expires_in - 60
         )
+        history.goBack()
       },
     }
   )
