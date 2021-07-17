@@ -5,7 +5,6 @@ import useLocalStorage from '../hooks/useLocalStorage'
 import { useMutation } from 'react-query'
 import { useHistory } from 'react-router-dom'
 export const AuthContext = createContext({})
-export const TOKEN_EXPIRED_AT = 'LIVRENSEMBLE_TOKEN_EXPIRED_AT'
 export const TOKEN = 'LIVRENSEMBLE_TOKEN'
 
 export const AuthContextProvider = ({ children }) => {
@@ -18,6 +17,9 @@ export const AuthContextProvider = ({ children }) => {
     onSuccess: ({ data }) => {
       setUser(data)
     },
+    onError: () => {
+      removeLocalItem(TOKEN)
+    },
   })
 
   const initializeUser = (token) => {
@@ -26,12 +28,6 @@ export const AuthContextProvider = ({ children }) => {
   }
 
   useEffect(() => {
-    // const expiresIn = getLocalItem(TOKEN_EXPIRED_AT)
-    // if (!expiresIn || expiresIn < Date.now()) {
-    //   removeLocalItem(TOKEN_EXPIRED_AT)
-    //   removeLocalItem(TOKEN)
-    //   return
-    // }
     const localToken = getLocalToken()
     if (localToken) {
       initializeUser(localToken)
@@ -45,7 +41,6 @@ export const AuthContextProvider = ({ children }) => {
         const token = `Bearer ${data.access_token}`
         initializeUser(token)
         setLocalItem(TOKEN, token)
-        setLocalItem(TOKEN_EXPIRED_AT, Date.now() + data.expires_in - 60)
         history.goBack()
       },
     }
@@ -54,7 +49,6 @@ export const AuthContextProvider = ({ children }) => {
   const logout = () => {
     axios.post('auth/logout')
     removeLocalItem(TOKEN)
-    removeLocalItem(TOKEN_EXPIRED_AT)
     window.location.reload()
   }
 
