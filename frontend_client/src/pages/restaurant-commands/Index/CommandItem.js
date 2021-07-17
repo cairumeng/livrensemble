@@ -1,9 +1,12 @@
 import Card from 'react-rainbow-components/components/Card'
+import { FaCalendarAlt, FaMotorcycle, FaMapMarkerAlt } from 'react-icons/fa'
 import { useHistory } from 'react-router-dom'
+import { format, parseISO } from 'date-fns'
 const DELIVERY_OPTION = {
   HOME: 0,
   POSITION: 1,
 }
+
 const CommandItem = ({ command }) => {
   const history = useHistory()
   return (
@@ -18,28 +21,36 @@ const CommandItem = ({ command }) => {
             className="w-36 h-36 transition-all duration-200 ease-in-out"
             src={command.restaurant.avatar}
           />
-          <div className="ml-6">
-            <div className="text-left relative -top-0.5 mt-0 mb-2.5 transition-all duration-200 ease-in-out text-lg leading-snug font-bold">
-              {command.restaurant.name}
-            </div>
+          <div className="ml-6 flex flex-col justify-between">
+            <div>
+              <div className="text-left relative -top-0.5 mt-0 mb-2.5 transition-all duration-200 ease-in-out text-lg leading-snug font-bold">
+                {command.restaurant.name}
+              </div>
 
-            <div className="mb-2 text-base leading-none text-left">
-              {command.restaurant.description}
+              <div className="mb-2 text-base leading-none text-left">
+                {command.restaurant.description}
+              </div>
             </div>
-
-            <div className="mb-2 text-base leading-none text-left">
-              End at: {command.ended_at}
-            </div>
-
-            <div className="mb-2 text-base leading-none text-left">
-              Delivery date: {command.delivery_date}
-            </div>
-
-            <div className="mb-2 text-base leading-none text-left">
-              Delivery Address:{' '}
-              {command.delivery_address_option === DELIVERY_OPTION.HOME
-                ? 'HOME'
-                : command.delivery_address}
+            <div className=" mt-5">
+              <div className="flex mb-2 text-base leading-none text-left">
+                <FaCalendarAlt className="mr-1" />
+                <div>{format(parseISO(command.ended_at), 'MM/dd/yyyy')}</div>
+              </div>
+              <div className="flex mb-2 text-base leading-none text-left">
+                <FaMotorcycle className="text-xl mr-1" />
+                <div>
+                  {format(parseISO(command.delivery_date), 'MM/dd/yyyy')}
+                </div>
+              </div>
+              <div className="flex mb-2 text-base leading-none text-left">
+                <FaMapMarkerAlt className="mr-1" />
+                <div>
+                  {' '}
+                  {command.delivery_address_option === DELIVERY_OPTION.HOME
+                    ? 'HOME'
+                    : command.delivery_address}
+                </div>
+              </div>
             </div>
           </div>
         </div>
