@@ -72,8 +72,13 @@ export const CartContextProvider = ({ children }) => {
   })
 
   const addToCart = (commandId, cartItem, quantity = 1) => {
+    const isSameRestaurant =
+      cartInfo.commandId && commandId === cartInfo.commandId
+
+    const items = isSameRestaurant ? cartItems : []
+
     let targetItem = null
-    let nextCartItems = cartItems
+    let nextCartItems = items
       .map((item) => {
         if (item.dish_id === cartItem.dish_id) {
           targetItem = item
@@ -84,12 +89,12 @@ export const CartContextProvider = ({ children }) => {
       .filter((item) => item.quantity !== 0)
 
     if (!user) {
-      if (!targetItem) nextCartItems = [...cartItems, { ...cartItem, quantity }]
+      if (!targetItem) nextCartItems = [...items, { ...cartItem, quantity }]
 
       setLocalCart(nextCartItems)
       setLocalCartInfo({ commandId })
       setCartItems(nextCartItems)
-      !cartInfo.commandId && setCartInfo({ commandId })
+      setCartInfo({ commandId })
       return
     }
 
@@ -103,8 +108,8 @@ export const CartContextProvider = ({ children }) => {
           commandId,
         })
         .then(({ data }) => {
-          setCartItems([...cartItems, data.data])
-          !cartInfo.commandId && setCartInfo({ commandId })
+          setCartItems([...items, data.data])
+          setCartInfo({ commandId })
         })
     }
   }

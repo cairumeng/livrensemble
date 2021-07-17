@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\CartItemResource;
 use App\Models\CartItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\CartItemResource;
 
 class CartItemsController extends Controller
 {
@@ -30,15 +32,26 @@ class CartItemsController extends Controller
         ]);
     }
 
+    private function getCurrentCommandId()
+    {
+        $currentCommand = CartItem::where('user_id', Auth::id())->first();
+        if ($currentCommand) return $currentCommand['restaurant_command_id'];
+        return null;
+    }
+
+    public function truncate()
+    {
+        return CartItem::where('user_id', Auth::id())->delete();
+    }
+
     public function scynchronize(Request $request)
     {
         $cartItems = collect($request->get('cartItems', []));
         $commandId = $request->commandId;
         $userId = Auth::id();
+        $currentCommandId = $this->getCurrentCommandId();
         $cartItemsToAdd = [];
         $currentDishIds = null;
-
-        $currentCommand = CartItem::where('user_id', $userId)->first();
 
         $cartItems = $cartItems->map(function ($item) use ($commandId, $userId) {
             return [
@@ -50,10 +63,13 @@ class CartItemsController extends Controller
                 'updated_at' => Carbon::now(),
             ];
         });
+        Log::debug($cartItems->first());
 
-        if ($currentCommand && ($currentCommand['restaurant_command_id'] != $commandId)) {
-            CartItem::where('user_id', $userId)->delete();
-            CartItem::insert($cartItems);
+        if ($currentCommandId != $commandId) {
+            DB::transaction(function () use (&$cartItems) {
+                $this->truncate();
+                CartItem::insert($cartItems->toArray());
+            });
         } else {
             $currentDishIds = CartItem::where('user_id', $userId)->pluck('dish_id')->toArray();
             foreach ($cartItems as $cartItem) {
@@ -77,6 +93,10 @@ class CartItemsController extends Controller
 
     public function store(Request $request)
     {
+        $currentCommandId = $this->getCurrentCommandId();
+        if ($currentCommandId !== $request->commandId) {
+            $this->truncate();
+        }
         $cartItem = CartItem::create([
             'user_id' => Auth::id(),
             'restaurant_command_id' => $request->commandId,
