@@ -14,6 +14,7 @@ import RestaurantCommandsShow from './pages/restaurant-commands/Show'
 import Header from './components/Header'
 import useAuth from './context/useAuth'
 import AppContextsWrapper from './AppContextsWrapper'
+import ProtectedRoute from './components/ProtectedRoute'
 
 import 'tailwindcss/tailwind.css'
 import './App.css'
@@ -30,17 +31,6 @@ function App() {
     <>
       <Header />
       <Switch>
-        <Route path="/" exact component={Home} />
-
-        {!user && (
-          <>
-            <Route path="/login" exact component={Login} />
-            <Route path="/register" exact component={Register} />
-            <Route path="/password-forgot" exact component={ForgotPassword} />
-            <Route path="/password-reset" exact component={ResetPassword} />
-          </>
-        )}
-
         <Route
           path="/restaurant-commands"
           exact
@@ -51,11 +41,22 @@ function App() {
           exact
           component={RestaurantCommandsShow}
         />
-        {user && (
-          <>
-            <Route path="/checkout" exact component={Checkout} />
-          </>
+        <ProtectedRoute
+          condition={user}
+          path="/checkout"
+          exact
+          component={Checkout}
+          failedRedirectUrl="/login"
+        />
+        {!user && <Route path="/login" exact component={Login} />}
+        {!user && <Route path="/register" exact component={Register} />}
+        {!user && (
+          <Route path="/password-forgot" exact component={ForgotPassword} />
         )}
+        {!user && (
+          <Route path="/password-reset" exact component={ResetPassword} />
+        )}
+        <Route path="*" component={Home} />
       </Switch>
     </>
   )
