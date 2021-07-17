@@ -13,6 +13,7 @@ import axios from 'axios'
 import CategoryDishes from './CategoryDishes'
 import Cart from './Cart'
 import useCart from '../../../context/useCart'
+import Spinner from 'react-rainbow-components/components/Spinner'
 
 const Show = () => {
   const { id } = useParams()
@@ -54,7 +55,7 @@ const Show = () => {
     }
   )
 
-  if (getCommand.isLoading || !command) return <div>Loading</div>
+  if (getCommand.isLoading || !command) return <Spinner />
 
   const isDifferentRestaurant = cartInfo.commandId && cartInfo.commandId != id
 
