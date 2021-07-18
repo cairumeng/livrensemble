@@ -6,7 +6,7 @@ import useCart from '../../../context/useCart'
 
 const getPrice = (item) => item.price * (1 - item.promo) * item.quantity
 
-const CartItemList = ({ cartItems, addToCart, commandId }) =>
+const CartItemList = ({ cartItems, addToCart, commandId, showCommandButton }) =>
   cartItems.map((item) => (
     <div key={item.dish_id}>
       <div className="flex justify-between mt-4">
@@ -16,22 +16,24 @@ const CartItemList = ({ cartItems, addToCart, commandId }) =>
         </div>
         <div className="text-gray-500 euro">{getPrice(item).toFixed(2)}</div>
       </div>
-      <div className="text-right my-4">
-        <Button
-          variant="neutral"
-          className="w-8 h-8 p-1 rounded-none"
-          onClick={() => addToCart(commandId, item, -1)}
-        >
-          <FaMinus className="text-blue-500" />
-        </Button>
-        <Button
-          variant="neutral"
-          className="w-8 h-8 p-1 rounded-none ml-2"
-          onClick={() => addToCart(commandId, item, 1)}
-        >
-          <FaPlus className="text-blue-500" />
-        </Button>
-      </div>
+      {showCommandButton && (
+        <div className="text-right my-4">
+          <Button
+            variant="neutral"
+            className="w-8 h-8 p-1 rounded-none"
+            onClick={() => addToCart(commandId, item, -1)}
+          >
+            <FaMinus className="text-blue-500" />
+          </Button>
+          <Button
+            variant="neutral"
+            className="w-8 h-8 p-1 rounded-none ml-2"
+            onClick={() => addToCart(commandId, item, 1)}
+          >
+            <FaPlus className="text-blue-500" />
+          </Button>
+        </div>
+      )}
     </div>
   ))
 
@@ -69,6 +71,7 @@ const Cart = ({ goBackUrl, showCommandButton }) => {
               cartItems={cartItems}
               addToCart={addToCart}
               commandId={id}
+              showCommandButton={showCommandButton}
             />
 
             <div>
