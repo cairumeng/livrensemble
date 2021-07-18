@@ -4,7 +4,13 @@ import classNames from 'classnames'
 import useClickOutside from '../hooks/useClickOutside'
 import logo from '../logo-pure.png'
 import useAuth from '../context/useAuth'
-import { FaLongArrowAltLeft } from 'react-icons/fa'
+import {
+  FaUser,
+  FaShoppingCart,
+  FaSignOutAlt,
+  FaLongArrowAltLeft,
+} from 'react-icons/fa'
+import { AiFillSetting } from 'react-icons/ai'
 
 const Header = () => {
   const [showProfile, setShowProfile] = useState(false)
@@ -125,32 +131,47 @@ const Header = () => {
                   tabIndex="-1"
                 >
                   <a
-                    className="block px-4 py-2 text-sm text-gray-700 cursor-pointer no-rainbow"
+                    className="flex items-center block px-4 py-2 text-sm text-gray-700 cursor-pointer no-rainbow"
                     role="menuitem"
                     href="#"
                     tabIndex="-1"
                     id="user-menu-item-0"
                   >
-                    Your Profile
+                    <FaUser className="mr-2" />
+                    <div>My profile</div>
                   </a>
                   <a
-                    className="block px-4 py-2 text-sm text-gray-700 cursor-pointer no-rainbow"
-                    role="menuitem"
-                    tabIndex="-1"
-                    id="user-menu-item-1"
-                    href="#"
-                  >
-                    Settings
-                  </a>
-                  <a
-                    onClick={logout}
-                    className="block px-4 py-2 text-sm text-gray-700 cursor-pointer no-rainbow"
+                    onClick={() => history.push('/my-commands')}
+                    className="flex items-center block px-4 py-2 text-sm text-gray-700 cursor-pointer no-rainbow"
                     role="menuitem"
                     tabIndex="-1"
                     id="user-menu-item-2"
                     href="#"
                   >
-                    Sign out
+                    <FaShoppingCart className="mr-2" />
+                    <div>My orders</div>
+                  </a>
+                  <a
+                    className="flex items-center block px-4 py-2 text-sm text-gray-700 cursor-pointer no-rainbow"
+                    role="menuitem"
+                    tabIndex="-1"
+                    id="user-menu-item-1"
+                    href="#"
+                  >
+                    <AiFillSetting className="mr-2" />
+                    <div>Settings</div>
+                  </a>
+
+                  <a
+                    onClick={logout}
+                    className="flex items-center block px-4 py-2 text-sm text-gray-700 cursor-pointer no-rainbow"
+                    role="menuitem"
+                    tabIndex="-1"
+                    id="user-menu-item-2"
+                    href="#"
+                  >
+                    <FaSignOutAlt className="mr-2" />
+                    <div>Sign out</div>
                   </a>
                 </div>
               </div>

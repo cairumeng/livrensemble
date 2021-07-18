@@ -1,5 +1,5 @@
 import Card from 'react-rainbow-components/components/Card'
-import { FaCalendarAlt, FaMotorcycle, FaMapMarkerAlt } from 'react-icons/fa'
+import { FaCalendarAlt, FaShippingFast, FaMapMarkerAlt } from 'react-icons/fa'
 import { useHistory } from 'react-router-dom'
 import { format, parseISO } from 'date-fns'
 const DELIVERY_OPTION = {
@@ -37,7 +37,7 @@ const CommandItem = ({ command }) => {
                 <div>{format(parseISO(command.ended_at), 'MM/dd/yyyy')}</div>
               </div>
               <div className="flex mb-2 text-base leading-none text-left">
-                <FaMotorcycle className="text-xl mr-1" />
+                <FaShippingFast className="text-xl mr-1" />
                 <div>
                   {format(parseISO(command.delivery_date), 'MM/dd/yyyy')}
                 </div>
