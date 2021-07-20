@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ClientCommandResource;
 use App\Models\Address;
 use App\Models\CartItem;
 use Illuminate\Support\Arr;
@@ -15,6 +16,13 @@ use Illuminate\Support\Facades\Log;
 
 class ClientCommandsController extends Controller
 {
+    public function index()
+    {
+        $clientCommands = ClientCommand::with(['restaurantCommand.restaurant', 'restaurantCommand.city'])->where('user_id', Auth::id())->paginate();
+
+        return ClientCommandResource::collection($clientCommands);
+    }
+
     public function store(Request $request)
     {
         $cartItems = CartItem::with('dish')->where('user_id', Auth::id())->get();

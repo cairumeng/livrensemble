@@ -29,6 +29,11 @@ class RestaurantCommand extends Model
         return $this->belongsTo(Restaurant::class);
     }
 
+    public function city()
+    {
+        return $this->belongsTo(City::class);
+    }
+
     public function scopeByStatus($query, $statuses)
     {
         if (is_array($statuses)) {
