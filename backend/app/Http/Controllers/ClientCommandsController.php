@@ -18,7 +18,7 @@ class ClientCommandsController extends Controller
 {
     public function index()
     {
-        $clientCommands = ClientCommand::with(['restaurantCommand.restaurant', 'restaurantCommand.city'])->where('user_id', Auth::id())->paginate();
+        $clientCommands = ClientCommand::with(['restaurantCommand.restaurant', 'restaurantCommand.city'])->where('user_id', Auth::id())->paginate(10);
 
         return ClientCommandResource::collection($clientCommands);
     }
