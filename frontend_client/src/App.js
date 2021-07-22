@@ -7,7 +7,8 @@ import ForgotPassword from './pages/auth/ForgotPassword'
 import ResetPassword from './pages/auth/ResetPassword'
 import Home from './pages/Home'
 import Checkout from './pages/Checkout'
-import ClientCommandsList from './pages/ClientCommandsList'
+import ClientCommandsIndex from './pages/client-commands/Index'
+import ClientCommandsShow from './pages/client-commands/Show'
 
 import RestaurantCommandsIndex from './pages/restaurant-commands/Index'
 import RestaurantCommandsShow from './pages/restaurant-commands/Show'
@@ -53,9 +54,18 @@ function App() {
           condition={user}
           path="/my-commands"
           exact
-          component={ClientCommandsList}
+          component={ClientCommandsIndex}
           failedRedirectUrl="/login"
         />
+
+        <ProtectedRoute
+          condition={user}
+          path="/my-commands/:id"
+          exact
+          component={ClientCommandsShow}
+          failedRedirectUrl="/login"
+        />
+
         {!user && <Route path="/login" exact component={Login} />}
         {!user && <Route path="/register" exact component={Register} />}
         {!user && (

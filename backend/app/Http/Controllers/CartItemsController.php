@@ -63,7 +63,6 @@ class CartItemsController extends Controller
                 'updated_at' => Carbon::now(),
             ];
         });
-        Log::debug($cartItems->first());
 
         if ($currentCommandId != $commandId) {
             DB::transaction(function () use (&$cartItems) {

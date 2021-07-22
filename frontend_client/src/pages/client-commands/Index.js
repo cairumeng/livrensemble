@@ -8,7 +8,6 @@ import Path from 'react-rainbow-components/components/Path'
 import PathStep from 'react-rainbow-components/components/PathStep'
 import Pagination from 'react-rainbow-components/components/Pagination'
 import Button from 'react-rainbow-components/components/Button'
-import id from 'date-fns/esm/locale/id/index'
 import { useHistory } from 'react-router'
 
 const STATUS = {
@@ -21,13 +20,14 @@ const STATUS = {
   6: 'Arrive',
 }
 
-const ClientCommand = ({ myCommand }) => {
+const ClientCommand = ({ command }) => {
   const [currentStep, setCurrentStep] = useState(STATUS[0])
+
   const history = useHistory()
 
   useEffect(() => {
-    setCurrentStep(STATUS[myCommand.restaurant_command.status])
-  }, [myCommand])
+    setCurrentStep(STATUS[command.restaurant_command.status])
+  }, [command])
   return (
     <Card
       className="my-5 p-2 w-full"
@@ -38,19 +38,19 @@ const ClientCommand = ({ myCommand }) => {
               Ordered At
               <div>
                 {format(
-                  parseISO(myCommand.client_command.created_at),
+                  parseISO(command.client_command.created_at),
                   'MM/dd/yyyy'
                 )}
               </div>
             </div>
             <div className="ml-7">
               Total
-              <div>Euro {myCommand.client_command.amount}</div>
+              <div>Euro {command.client_command.amount}</div>
             </div>
           </div>
           <div className="ml-7">
             N°Command
-            <div className="font-bold">{myCommand.client_command.id}</div>
+            <div className="font-bold">{command.client_command.id}</div>
           </div>
         </div>
       }
@@ -58,7 +58,7 @@ const ClientCommand = ({ myCommand }) => {
       <div className="flex mb-3 pl-3 justify-between">
         <div className="flex">
           <img
-            src={myCommand.restaurant.avatar}
+            src={command.restaurant.avatar}
             className="w-16 h-16 transition-all duration-200 ease-in-out"
           ></img>
           <div className="self-center">
@@ -88,18 +88,27 @@ const ClientCommand = ({ myCommand }) => {
         </div>
         <Button
           size="small"
+          label="Detail"
           variant="brand"
           className="rounded-lg h-10 mr-5"
-          onClick={() => history.push(`/my-commands/${id}`)}
-        >
-          Detail
-        </Button>
+          onClick={() =>
+            history.push(`/my-commands/${command.client_command.id}`)
+          }
+        />
       </div>
     </Card>
   )
 }
 
-const ClientCommandsList = () => {
+const ClientCommandList = ({ commands }) => (
+  <>
+    {commands.map((command) => (
+      <ClientCommand command={command} key={command.client_command.id} />
+    ))}
+  </>
+)
+
+const Index = () => {
   const [myCommands, setMyCommands] = useState([])
   const [activePage, setActivePage] = useState(1)
   const [totalPage, setTotalPage] = useState(1)
@@ -128,12 +137,7 @@ const ClientCommandsList = () => {
 
   return (
     <div className="max-w-7xl mx-auto my-auto px-2 sm:px-6 lg:px-8 mt-7 text-center ">
-      {myCommands.map((myCommand) => (
-        <ClientCommand
-          myCommand={myCommand}
-          key={myCommand.client_command.id}
-        />
-      ))}
+      <ClientCommandList commands={myCommands} />
       <Pagination
         className="p-5"
         pages={totalPage}
@@ -143,4 +147,4 @@ const ClientCommandsList = () => {
     </div>
   )
 }
-export default ClientCommandsList
+export default Index

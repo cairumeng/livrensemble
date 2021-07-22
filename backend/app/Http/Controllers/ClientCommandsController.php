@@ -97,4 +97,23 @@ class ClientCommandsController extends Controller
         });
         return response()->json(['clientCommandId' => $clientCommandId]);
     }
+
+    public function show($id)
+    {
+
+        $result = ClientCommand::with(['restaurantCommand.restaurant', 'restaurantCommand.city'])->find($id);
+        $clientCommand =  new ClientCommandResource($result);
+
+        $clientCommandDishes = ClientCommandDish::with('dish')->where('client_command_id', $id)->get();
+
+        $restaurantCommandId = $result->restaurant_command_id;
+
+        $users = ClientCommand::with('user')->where('restaurant_command_id', $restaurantCommandId)->select('user_id')->get();
+
+        return response()->json([
+            'client_command' => $clientCommand,
+            'client_command_dishes' => $clientCommandDishes,
+            'users' => $users
+        ]);
+    }
 }

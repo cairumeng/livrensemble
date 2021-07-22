@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\User;
 use App\Models\RestaurantCommand;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,5 +15,9 @@ class ClientCommand extends Model
     public function restaurantCommand()
     {
         return $this->belongsTo(RestaurantCommand::class);
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }
