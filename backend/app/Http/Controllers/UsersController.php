@@ -57,4 +57,19 @@ class UsersController extends Controller
         $request->validate(['name' => 'required|min:2|max:16']);
         return $user->update(['name' => $request->name]);
     }
+
+    public function changePassword(Request $request, User $user)
+    {
+        $request->validate([
+            'new_password' => 'required|confirmed|min:6',
+            'current_password' => ['required', function ($attributes, $value, $fail) use ($user) {
+                if (!Hash::check($value, $user->password)) {
+                    return $fail(__('The current password is incorrect.'));
+                }
+            }],
+        ]);
+        return $user->update([
+            'password' => Hash::make($request->new_password)
+        ]);
+    }
 }

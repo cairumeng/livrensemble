@@ -25,14 +25,13 @@ Route::group(['prefix' => 'auth'], function ($router) {
 Route::resource('users', 'UsersController')->only(['store', 'update']);
 Route::post('users/{user}/upload-avatar', 'UsersController@avatarUploader');
 Route::put('users/{user}/name', 'UsersController@changeName');
-
+Route::put('users/{user}/change-password', 'UsersController@changePassword');
 
 Route::post('password/email', 'ForgotPasswordController@forgot');
 Route::post('password/reset', 'ForgotPasswordController@reset');
 Route::resource('cities', 'CitiesController')->only(['index']);
 
 Route::resource('restaurant-commands', 'RestaurantCommandsController')->only(['index', 'show']);
-
 Route::resource('dish-categories', 'DishCategoriesController')->only(['index']);
 Route::resource('cart-items', 'CartItemsController')->only(['index', 'update', 'store']);
 Route::post('cart-items/scynchronize', 'CartItemsController@scynchronize');

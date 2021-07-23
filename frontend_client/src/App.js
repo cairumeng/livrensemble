@@ -7,7 +7,7 @@ import ForgotPassword from './pages/auth/ForgotPassword'
 import ResetPassword from './pages/auth/ResetPassword'
 import Home from './pages/Home'
 import Checkout from './pages/Checkout'
-import Profile from './pages/Profile'
+import Profile from './pages/profile/Profile'
 import ClientCommandsIndex from './pages/client-commands/Index'
 import ClientCommandsShow from './pages/client-commands/Show'
 import RestaurantCommandsIndex from './pages/restaurant-commands/Index'
@@ -51,11 +51,12 @@ function App() {
         />
         <ProtectedRoute
           condition={user}
-          path="/users/:id"
+          path="/users/:id/personal-info"
           exact
           component={Profile}
           failedRedirectUrl="/login"
         />
+
         <ProtectedRoute
           condition={user}
           path="/my-commands"

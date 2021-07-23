@@ -78,6 +78,9 @@ const Header = () => {
               )}
 
               <img className="block h-10 w-auto" src={logo} alt="logo" />
+              <Link to="/" className="text-base text-black ml-5 no-rainbow">
+                Home
+              </Link>
             </div>
             <div className="hidden sm:block sm:ml-6">
               <div className="flex space-x-4">
@@ -131,7 +134,9 @@ const Header = () => {
                   tabIndex="-1"
                 >
                   <a
-                    onClick={() => history.push(`/users/${user.id}`)}
+                    onClick={() =>
+                      history.push(`/users/${user.id}/personal-info`)
+                    }
                     className="flex items-center block px-4 py-2 text-sm text-gray-700 cursor-pointer no-rainbow"
                     role="menuitem"
                     href="#"
@@ -151,16 +156,6 @@ const Header = () => {
                   >
                     <FaShoppingCart className="mr-2" />
                     <div>My orders</div>
-                  </a>
-                  <a
-                    className="flex items-center block px-4 py-2 text-sm text-gray-700 cursor-pointer no-rainbow"
-                    role="menuitem"
-                    tabIndex="-1"
-                    id="user-menu-item-1"
-                    href="#"
-                  >
-                    <AiFillSetting className="mr-2" />
-                    <div>Settings</div>
                   </a>
 
                   <a
