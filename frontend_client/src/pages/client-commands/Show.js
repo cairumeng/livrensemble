@@ -6,11 +6,20 @@ import Spinner from 'react-rainbow-components/components/Spinner'
 import ProgressBar from 'react-rainbow-components/components/ProgressBar'
 import Avatar from 'react-rainbow-components/components/Avatar'
 import classNames from 'classnames'
-
 const DELIVERY_OPTION = {
   HOME: 0,
   POSITION: 1,
 }
+const STATUS = {
+  0: 'Grouping',
+  1: 'Success',
+  2: 'Fail',
+  3: 'Canceled',
+  4: 'Preparation',
+  5: 'Shipped',
+  6: 'Arrived',
+}
+
 const Show = () => {
   const params = useParams()
   const [clientCommand, setClientCommand] = useState({})
@@ -68,7 +77,7 @@ const Show = () => {
             {restaurantCommand.id}
           </div>
 
-          <div className="text-base text-left ">
+          <div className="text-base text-left">
             <span className="text-lg font-bold mr-5 ">Start Date:</span>
             {restaurantCommand.started_at}
           </div>
@@ -78,9 +87,20 @@ const Show = () => {
             {restaurantCommand.ended_at}
           </div>
 
-          <div className="text-base text-left mb-10">
+          <div className="text-base text-left">
             <span className="text-lg font-bold mr-5">Delivery Date:</span>
             {restaurantCommand.delivery_date}
+          </div>
+
+          <div
+            className={classNames('text-base text-left mb-10', {
+              'text-red-500':
+                STATUS[restaurantCommand.status] == 'Fail' ||
+                STATUS[restaurantCommand.status] == 'Canceled',
+            })}
+          >
+            <span className="text-lg font-bold mr-5">Status:</span>
+            {STATUS[restaurantCommand.status]}
           </div>
 
           <div className="flex justify-between ">
@@ -162,8 +182,8 @@ const Show = () => {
           {shippingAddress.phone}
         </div>
         <div className="mt-10">
-          <div className="text-lg font-bold ">Participants</div>
-          <div className="flex">
+          <div className="text-lg font-bold ">Participants:</div>
+          <div className="flex mt-3">
             {users.length > 0 &&
               users.map((user) => (
                 <Avatar src={user.user.avatar} size="medium" />

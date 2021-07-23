@@ -17,7 +17,7 @@ const STATUS = {
   3: 'Canceled',
   4: 'Preparation',
   5: 'Shipped',
-  6: 'Arrive',
+  6: 'Arrived',
 }
 
 const ClientCommand = ({ command }) => {
