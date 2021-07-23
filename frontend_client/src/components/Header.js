@@ -131,6 +131,7 @@ const Header = () => {
                   tabIndex="-1"
                 >
                   <a
+                    onClick={() => history.push(`/users/${user.id}`)}
                     className="flex items-center block px-4 py-2 text-sm text-gray-700 cursor-pointer no-rainbow"
                     role="menuitem"
                     href="#"

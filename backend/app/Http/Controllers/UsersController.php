@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class UsersController extends Controller
 {
@@ -38,5 +39,22 @@ class UsersController extends Controller
             'name' => $request->name,
             'description' => $request->description
         ]);
+    }
+
+    public function avatarUploader(Request $request, User $user)
+    {
+        $request->validate(['avatar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048']);
+        $avatar = $request->avatar;
+        $avatarName = time() . '.' . $avatar->extension();
+        Storage::putFileAs('images/avatars', $avatar, $avatarName, 'public');
+        $path = Storage::url('images/avatars/' . $avatarName);
+        $user->update(['avatar' => $path]);
+        return $path;
+    }
+
+    public function changeName(Request $request, User $user)
+    {
+        $request->validate(['name' => 'required|min:2|max:16']);
+        return $user->update(['name' => $request->name]);
     }
 }
