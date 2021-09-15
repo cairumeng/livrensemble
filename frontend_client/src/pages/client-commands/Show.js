@@ -54,8 +54,8 @@ const Show = () => {
   ).toFixed(1)
 
   return (
-    <div className="flex">
-      <div className=" w-2/3  my-auto px-2 sm:px-6 lg:px-8 mt-7 text-center">
+    <div className="md:flex">
+      <div className="my-auto px-5 md:px-6 md:w-2/3 lg:px-8 pt-20 text-center">
         <div id="command" className="bg-gray-50">
           <div
             style={{
@@ -65,13 +65,13 @@ const Show = () => {
               height: 200,
             }}
           />
-          <div className="ml-8 mt-5 pb-3">
+          <div className="mt-5 pb-3 text-center">
             <div className="text-2xl font-bold">{restaurant.name}</div>
             <span>{restaurant.description}</span>
           </div>
 
           <div className="text-base mt-5 text-left">
-            <span className="text-lg font-bold mr-5 ">
+            <span className="text-lg font-bold mr-5">
               Restaurant Command #:
             </span>
             {restaurantCommand.id}
@@ -147,7 +147,7 @@ const Show = () => {
           </div>
         </div>
       </div>
-      <div className="mt-10">
+      <div className="mt-10 px-5 pb-20">
         <div className="text-base mt-5 text-left">
           <span className="text-lg font-bold mr-5 ">Command #:</span>
           {clientCommand.id}
