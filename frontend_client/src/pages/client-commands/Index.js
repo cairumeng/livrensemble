@@ -4,11 +4,12 @@ import { useMutation } from 'react-query'
 import { format, parseISO } from 'date-fns'
 import Spinner from 'react-rainbow-components/components/Spinner'
 import Card from 'react-rainbow-components/components/Card'
-import Path from 'react-rainbow-components/components/Path'
-import PathStep from 'react-rainbow-components/components/PathStep'
 import Pagination from 'react-rainbow-components/components/Pagination'
 import Button from 'react-rainbow-components/components/Button'
 import { useHistory } from 'react-router'
+import { isBrowser, isMobileOnly } from 'react-device-detect'
+import ProgressIndicator from 'react-rainbow-components/components/ProgressIndicator'
+import ProgressStep from 'react-rainbow-components/components/ProgressStep'
 
 const STATUS = {
   0: 'Grouping',
@@ -18,6 +19,35 @@ const STATUS = {
   4: 'Preparation',
   5: 'Shipped',
   6: 'Arrived',
+}
+
+const Progress = ({ currentStep }) => {
+  return (
+    <div className="self-center">
+      {currentStep === 'Fail' && (
+        <ProgressIndicator className="ml-20" currentStepName={currentStep}>
+          <ProgressStep name="Grouping" label="Grouping" />
+          <ProgressStep name="Fail" label="Fail" hasError />
+        </ProgressIndicator>
+      )}
+
+      {currentStep === 'Canceled' && (
+        <ProgressIndicator className="ml-20" currentStepName={currentStep}>
+          <ProgressStep name="Grouping" label="Grouping" />
+          <ProgressStep name="Canceled" label="Canceled" hasError />
+        </ProgressIndicator>
+      )}
+      {currentStep !== 'Fail' && currentStep !== 'Canceled' && (
+        <ProgressIndicator className="ml-20" currentStepName={currentStep}>
+          <ProgressStep name="Grouping" label="Grouping" />
+          <ProgressStep name="Success" label="Success" />
+          <ProgressStep name="Preparation" label="Preparation" />
+          <ProgressStep name="Shipped" label="Shipped" />
+          <ProgressStep name="Arrived" label="Arrived" />
+        </ProgressIndicator>
+      )}
+    </div>
+  )
 }
 
 const ClientCommand = ({ command }) => {
@@ -56,36 +86,14 @@ const ClientCommand = ({ command }) => {
       }
     >
       <div className="flex mb-3 pl-3 justify-between">
-        <div className="flex">
+        <div className="flex w-full">
           <img
             src={command.restaurant.avatar}
             className="w-16 h-16 transition-all duration-200 ease-in-out"
-          ></img>
-          <div className="self-center">
-            {currentStep === 'Fail' && (
-              <Path className=" ml-20" currentStepName={currentStep}>
-                <PathStep name="Grouping" label="Grouping" />
-                <PathStep name="Fail" label="Fail" hasError />
-              </Path>
-            )}
-
-            {currentStep === 'Canceled' && (
-              <Path className=" ml-20" currentStepName={currentStep}>
-                <PathStep name="Grouping" label="Grouping" />
-                <PathStep name="Canceled" label="Canceled" hasError />
-              </Path>
-            )}
-            {currentStep !== 'Fail' && currentStep !== 'Canceled' && (
-              <Path className=" ml-20" currentStepName={currentStep}>
-                <PathStep name="Grouping" label="Grouping" />
-                <PathStep name="Success" label="Success" />
-                <PathStep name="Preparation" label="Preparation" />
-                <PathStep name="Shipped" label="Shipped" />
-                <PathStep name="Arrived" label="Arrived" />
-              </Path>
-            )}
-          </div>
+          />
+          {isBrowser && <Progress currentStep={currentStep} />}
         </div>
+
         <Button
           size="small"
           label="Detail"
@@ -96,6 +104,7 @@ const ClientCommand = ({ command }) => {
           }
         />
       </div>
+      {/* {isMobileOnly && <Progress currentStep={currentStep} />} */}
     </Card>
   )
 }
@@ -136,7 +145,7 @@ const Index = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto my-auto px-2 sm:px-6 lg:px-8 mt-7 text-center ">
+    <div className="max-w-7xl mx-auto my-auto px-2 sm:px-6 lg:px-8 pt-20 text-center ">
       <ClientCommandList commands={myCommands} />
       <Pagination
         className="p-5"

@@ -10,46 +10,45 @@ const DELIVERY_OPTION = {
 const CommandItem = ({ command }) => {
   const history = useHistory()
   return (
-    <Card className="relative mb-3 block px-3 py-5 cursor-pointer">
+    <Card className="relative mb-5 block pl-3 md:pl-5 py-3 md:py-5 cursor-pointer w-11/12 md:w-3/4">
       <div
         className="w-full flex items-stretch justify-between sm:justify-items-start sm:flex-col"
         onClick={() => history.push(`restaurant-commands/${command.id}`)}
       >
-        <div className="flex pr-5 md:pr-4 sm:w-full pr-0">
+        <div className="flex pr-5 md:pr-4 w-full pr-0">
           <img
             alt={command.restaurant.name}
-            className="w-36 h-36 transition-all duration-200 ease-in-out"
+            className="w-20 h-20 md:w-36 md:h-36 transition-all duration-200 ease-in-out self-center"
             src={command.restaurant.avatar}
           />
-          <div className="ml-6 flex flex-col justify-between">
+          <div className="ml-4 md:ml-10 flex flex-col justify-between">
             <div>
-              <div className="text-left relative -top-0.5 mt-0 mb-2.5 transition-all duration-200 ease-in-out text-lg leading-snug font-bold">
+              <div className="text-left relative -top-0.5 mt-0 md:mb-2.5 transition-all duration-200 ease-in-out md:text-lg leading-snug font-bold">
                 {command.restaurant.name}
               </div>
 
-              <div className="mb-2 text-base leading-none text-left">
+              <div className="leading-none sm:text-sm text-left">
                 {command.restaurant.description}
               </div>
             </div>
-            <div className=" mt-5">
-              <div className="flex mb-2 text-base leading-none text-left">
+            <div className="mt-2 md:mt-3 sm:text-sm">
+              <div className="flex md:mb-2 leading-none text-left">
                 <FaCalendarAlt className="mr-1" />
                 <div>{format(parseISO(command.ended_at), 'MM/dd/yyyy')}</div>
               </div>
-              <div className="flex mb-2 text-base leading-none text-left">
-                <FaShippingFast className="text-xl mr-1" />
+              <div className="flex md:mb-2 leading-none text-left">
+                <FaShippingFast className="mr-1" />
                 <div>
                   {format(parseISO(command.delivery_date), 'MM/dd/yyyy')}
                 </div>
               </div>
-              <div className="flex mb-2 text-base leading-none text-left">
+              <div className="flex md:mb-2 leading-none text-left">
                 <FaMapMarkerAlt className="mr-1" />
-                <div>
-                  {' '}
-                  {command.delivery_address_option === DELIVERY_OPTION.HOME
-                    ? 'HOME'
-                    : command.delivery_address}
-                </div>
+                {command.delivery_address_option === DELIVERY_OPTION.HOME ? (
+                  <div>HOME</div>
+                ) : (
+                  <div>{command.delivery_address}</div>
+                )}
               </div>
             </div>
           </div>

@@ -115,19 +115,19 @@ const Checkout = () => {
         </p>
       </Modal>
 
-      <div className="flex justify-between">
-        <div id="checkout" className="mx-10 mt-5 w-full">
-          <div className="text-2xl font-bold mb-5">Checkout</div>
+      <div className="md:flex md:justify-between pt-20">
+        <div id="checkout" className="px-5 md:mx-10 w-full">
+          <div className="text-lg md:text-2xl font-bold mb-5">Checkout</div>
           <div className="border-solid border-2 border-yellow-500 rounded-md p-7 ">
-            <div id="delivery-address" className="mt-5">
+            <div id="delivery-address" className="md:mt-5">
               <div className="text-base font-bold font-serif ">
                 Delivery Address
               </div>
               {deliveryAddressOption === 0 && (
                 <>
-                  <div className="flex justify-between mt-3">
+                  <div className="flex justify-between mt-3 mx-5">
                     <Input
-                      className="w-full"
+                      className="w-full "
                       label="Address"
                       required
                       value={address.address || ''}
@@ -168,21 +168,16 @@ const Checkout = () => {
                 </>
               )}
               {deliveryAddressOption === 1 && (
-                <Input
-                  className="w-full mt-3"
-                  value={address.address || ''}
-                  readOnly
-                  type="text"
-                />
+                <div className="mt-1 md:mt-3 ">{address.address || ''}</div>
               )}
             </div>
-            <div id="personal-info" className="mt-10 mb-5">
+            <div id="personal-info" className="mt-5 mb-3 md:mt-10 md:mb-5">
               <div className="text-base font-bold font-serif">
                 Personal info
               </div>
-              <div className="flex justify-between mt-3">
+              <div className="md:flex md:justify-between mt-3">
                 <Input
-                  className="w-1/2"
+                  className="mt-3 md:w-1/2"
                   label="Name"
                   value={address.name || ''}
                   required
@@ -202,7 +197,7 @@ const Checkout = () => {
                   onChange={(e) =>
                     setAddress({ ...address, wechat: e.target.value })
                   }
-                  className="w-1/2 ml-5"
+                  className="mt-3 md:w-1/2 md:ml-5"
                   placeholder="Please enter your wechat"
                   type="text"
                 />
@@ -218,7 +213,7 @@ const Checkout = () => {
                 onChange={(e) =>
                   setAddress({ ...address, phone: e.target.value })
                 }
-                className="w-1/2 mt-5"
+                className="w-full mt-3 md:w-1/2 md:mt-5"
                 placeholder="Please enter your phone"
                 type="tel"
               />
@@ -232,7 +227,7 @@ const Checkout = () => {
                 value={note}
                 onChange={(e) => setNote(e.target.value)}
                 placeholder="Leave your note here"
-                style={{ width: '700px' }}
+                style={{ width: 'full' }}
               />
             </div>
             <Button
@@ -244,7 +239,7 @@ const Checkout = () => {
             />
           </div>
         </div>
-        <div id="cart" className="w-1/3 shadow">
+        <div id="cart" className="pb-20 md:w-1/3 shadow">
           <Cart showCommandButton={false} />
         </div>
       </div>

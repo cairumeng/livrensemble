@@ -23,7 +23,7 @@ const Header = () => {
   })
 
   return (
-    <nav className="bg-gray-50">
+    <nav className="bg-gray-50 fixed w-full md:absolute z-50">
       <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
         <div className="relative flex items-center justify-between h-16">
           <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
@@ -125,7 +125,7 @@ const Header = () => {
 
                 <div
                   className={classNames(
-                    'z-50 origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none',
+                    'origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none',
                     { hidden: !showProfile }
                   )}
                   role="menu"
@@ -173,39 +173,6 @@ const Header = () => {
               </div>
             </div>
           )}
-        </div>
-      </div>
-
-      <div className="sm:hidden" id="mobile-menu">
-        <div className="px-2 pt-2 pb-3 space-y-1">
-          <a
-            href="#"
-            className="bg-gray-900 text-black block px-3 py-2 rounded-md text-base font-medium"
-            aria-current="page"
-          >
-            Dashboard
-          </a>
-
-          <a
-            href="#"
-            className="text-black hover:bg-gray-100 hover:text-black block px-3 py-2 rounded-md text-base font-medium"
-          >
-            Team
-          </a>
-
-          <a
-            href="#"
-            className="text-black hover:bg-gray-100 hover:text-black block px-3 py-2 rounded-md text-base font-medium"
-          >
-            Projects
-          </a>
-
-          <a
-            href="#"
-            className="text-black hover:bg-gray-100 hover:text-black block px-3 py-2 rounded-md text-base font-medium"
-          >
-            Calendar
-          </a>
         </div>
       </div>
     </nav>

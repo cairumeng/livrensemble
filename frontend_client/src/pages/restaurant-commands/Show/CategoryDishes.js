@@ -1,5 +1,5 @@
 import { GiChiliPepper } from 'react-icons/gi'
-import { FaCartPlus } from 'react-icons/fa'
+import { FaPlus } from 'react-icons/fa'
 import useCart from '../../../context/useCart'
 import { useParams } from 'react-router-dom'
 
@@ -17,20 +17,16 @@ const SpicyLevel = ({ level }) => {
 
 const PriceTag = ({ price, promo }) => {
   if (promo == 0) {
-    return (
-      <div className="text-yellow-500 text-lg font-bold my-1"> {price}€ </div>
-    )
+    return <div className="md:text-lg font-bold my-1"> {price}€ </div>
   }
   const reducedPrice = (price * (1 - promo)).toFixed(2)
 
   return (
     <div className="flex">
-      <div className="text-gray-500 text-lg  my-1 line-through italic">
+      <div className="text-gray-500 md:text-lg my-1 line-through italic">
         {price}€
       </div>
-      <div className="text-yellow-500 font-bold text-lg my-1 ml-3">
-        {reducedPrice}€
-      </div>
+      <div className="font-bold md:text-lg my-1 ml-3">{reducedPrice}€</div>
     </div>
   )
 }
@@ -42,7 +38,7 @@ const CategoryDishes = ({ category }) => {
   return (
     <>
       <div className="flex justify-between" id={`category-${category.id}`}>
-        <div className="text-xl pt-4 pl-4 text-black font-bold">
+        <div className="text-base md:text-xl pt-4 pl-4 text-black font-bold">
           {category.name}
         </div>
       </div>
@@ -56,23 +52,27 @@ const CategoryDishes = ({ category }) => {
             <img
               alt={dish.name}
               src={dish.avatar}
-              className="w-40 h-40 rounded-md flex-shrink-0"
+              className="w-28 h-28 md:w-40 md:h-40 rounded-md flex-shrink-0 my-auto"
             />
             <div className="ml-5 flex flex-col justify-between flex-grow">
               <div>
-                <div className="font-bold mt-3 text-xl mb-1 capitalize">
+                <div className="font-bold mt-3 md:text-xl mb-1 capitalize">
                   {dish.name}
                 </div>
                 <SpicyLevel level={dish.spicy_level} />
 
-                <div className="text-sm my-1">{dish.description}</div>
-                <div className="text-sm italic">{dish.ingredients}</div>
+                <div className="text-xs md:text-sm my-1">
+                  {dish.description}
+                </div>
+                <div className="text-xs md:text-sm italic">
+                  {dish.ingredients}
+                </div>
               </div>
 
               <PriceTag price={dish.price} promo={dish.promo} />
             </div>
-            <FaCartPlus
-              className="mt-4 mr-4 flex-shrink-0 text-blue-500 cursor-pointer text-lg"
+            <FaPlus
+              className="mt-4 mr-4 flex-shrink-0 text-blue-500 cursor-pointer text-xl"
               onClick={() =>
                 addToCart(id, {
                   dish_id: dish.id,

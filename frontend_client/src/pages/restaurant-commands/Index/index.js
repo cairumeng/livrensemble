@@ -37,26 +37,28 @@ const Index = () => {
   }, [activePage])
 
   return (
-    <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 mt-7 text-center ">
+    <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 pt-20 text-center ">
       <Carousel />
       <span className="inline-block text-2xl font-extrabold text-gray-900 tracking-tight mt-5 mb-5">
         {city && `${city.name}-${city.postal_code}`}
       </span>
-
-      {getCommands.isLoading ? (
-        <CommandLoadingShape />
-      ) : (
-        commands.map((command) => (
-          <CommandItem key={command.id} command={command} />
-        ))
+      <div className="grid justify-items-center">
+        {getCommands.isLoading ? (
+          <CommandLoadingShape />
+        ) : (
+          commands.map((command) => (
+            <CommandItem key={command.id} command={command} />
+          ))
+        )}
+      </div>
+      {totalPage > 1 && (
+        <Pagination
+          className="mx-auto"
+          pages={totalPage}
+          activePage={activePage}
+          onChange={changePageHandler}
+        />
       )}
-
-      <Pagination
-        className="mx-auto"
-        pages={totalPage}
-        activePage={activePage}
-        onChange={changePageHandler}
-      />
     </div>
   )
 }
