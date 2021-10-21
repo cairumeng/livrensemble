@@ -18,7 +18,7 @@ const Login = () => {
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-8 2xl:grid-cols-5 gap-4 mt-24 p-4">
+    <div className="grid grid-cols-1 sm:grid-cols-8 2xl:grid-cols-5 gap-4 p-4 pt-36">
       <Card className="sm:col-start-3 sm:col-span-4 2xl:col-start-3 2xl:col-span-1 p-6 text-center">
         <div>
           <img src={logo} className="w-28 m-auto" alt="logo" />

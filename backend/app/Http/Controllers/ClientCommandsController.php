@@ -31,7 +31,6 @@ class ClientCommandsController extends Controller
 
         $deliveryAddressOption = RestaurantCommand::findOrFail($restaurantCommandId)->delivery_address_option;
 
-
         $rules = [
             'address.name' => 'required|min:2',
             'address.phone' => 'required',
@@ -44,10 +43,7 @@ class ClientCommandsController extends Controller
 
         $request->validate($rules);
 
-
         $clientCommandId = DB::transaction(function () use (&$cartItems, $restaurantCommandId, $deliveryAddressOption) {
-
-
             $amount = $cartItems->sum(function ($item) {
                 return $item->dish->price * (1 - $item->dish->promo) * $item->quantity;
             });

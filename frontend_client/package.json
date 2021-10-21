@@ -10,6 +10,9 @@
     "axios": "^0.21.1",
     "classnames": "^2.3.1",
     "date-fns": "^2.22.1",
+    "express": "^4.17.1",
+    "express-favicon": "^2.0.1",
+    "path": "^0.12.7",
     "prettier": "^2.2.1",
     "react": "^16.8.6",
     "react-alert": "^7.0.3",
@@ -25,7 +28,8 @@
     "web-vitals": "^1.1.1"
   },
   "scripts": {
-    "start": "craco start",
+    "start": "node server.js",
+    "dev": "craco start",
     "build": "craco build",
     "test": "craco test",
     "eject": "react-scripts eject"

@@ -18,20 +18,18 @@ const CartItemList = ({ cartItems, addToCart, commandId, showCommandButton }) =>
       </div>
       {showCommandButton && (
         <div className="text-right my-4">
-          <Button
-            variant="neutral"
-            className="w-8 h-8 p-1 rounded-none"
+          <button
+            className="w-8 h-8 p-1 rounded-none items-center inline-flex align-middle justify-center border-gray-300 border hover:bg-blue-50"
             onClick={() => addToCart(commandId, item, -1)}
           >
             <FaMinus className="text-blue-500" />
-          </Button>
-          <Button
-            variant="neutral"
-            className="w-8 h-8 p-1 rounded-none ml-2"
+          </button>
+          <button
+            className="w-8 h-8 p-1 rounded-none items-center inline-flex align-middle justify-center border-gray-300 border hover:bg-blue-50 ml-1"
             onClick={() => addToCart(commandId, item, 1)}
           >
             <FaPlus className="text-blue-500" />
-          </Button>
+          </button>
         </div>
       )}
     </div>
